@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo中插入本地图片 | Sela乐园</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="安装hexo-asset-image插件 配置 插入图片 预览   安装hexo-asset-image插件使用如下命令安装插件 1npm install https://github.com/CodeFalling/hexo-asset-image --sav 插件安装完以后，实际上是存放在下面的目录文件夹下 1\node_modules\hexo-asset-image hexo-ass">
+<meta name="keywords" content="Hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo中插入本地图片">
+<meta property="og:url" content="https://sela0629.github.io/2018/09/02/Hexo中插入本地图片/index.html">
+<meta property="og:site_name" content="Sela乐园">
+<meta property="og:description" content="安装hexo-asset-image插件 配置 插入图片 预览   安装hexo-asset-image插件使用如下命令安装插件 1npm install https://github.com/CodeFalling/hexo-asset-image --sav 插件安装完以后，实际上是存放在下面的目录文件夹下 1\node_modules\hexo-asset-image hexo-ass">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://sela0629.github.io/2018/09/02/Hexo中插入本地图片/6.png">
+<meta property="og:image" content="https://sela0629.github.io/2018/09/02/Hexo中插入本地图片/1.jpg">
+<meta property="og:updated_time" content="2018-09-02T04:31:38.909Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo中插入本地图片">
+<meta name="twitter:description" content="安装hexo-asset-image插件 配置 插入图片 预览   安装hexo-asset-image插件使用如下命令安装插件 1npm install https://github.com/CodeFalling/hexo-asset-image --sav 插件安装完以后，实际上是存放在下面的目录文件夹下 1\node_modules\hexo-asset-image hexo-ass">
+<meta name="twitter:image" content="https://sela0629.github.io/2018/09/02/Hexo中插入本地图片/6.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Sela乐园" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sela乐园</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Sela的前端小天地</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://sela0629.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Hexo中插入本地图片" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/02/Hexo中插入本地图片/" class="article-date">
+  <time datetime="2018-09-02T04:03:24.000Z" itemprop="datePublished">2018-09-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Hexo中插入本地图片
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#安装hexo-asset-image插件">安装hexo-asset-image插件</a></li>
+<li><a href="#配置">配置</a></li>
+<li><a href="#插入图片">插入图片</a></li>
+<li><a href="#预览">预览</a></li>
+</ul>
+<!-- tocstop -->
+<h1><span id="安装hexo-asset-image插件">安装hexo-asset-image插件</span></h1><p>使用如下命令安装插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install https://github.com/CodeFalling/hexo-asset-image --sav</span><br></pre></td></tr></table></figure>
+<p>插件安装完以后，实际上是存放在下面的目录文件夹下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\node_modules\hexo-asset-image</span><br></pre></td></tr></table></figure>
+<p>hexo-asset-image的原理应该是根据Hexo生成html后以时间的为目录的规则，将我们图片的相对地址转换成了生成后与时间对应目录的绝对地址。</p>
+<h1><span id="配置">配置</span></h1><p>图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过配置_config.yml来生成。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure>
+<p>将_config.yml文件中的配置项post_asset_folder设为true后，执行命令$ hexo new post_name，在source/_posts中会生成文章post_name.md和同名文件夹post_name。将图片资源放在post_name中，文章就可以使用相对路径引用图片资源了。</p>
+<h1><span id="插入图片">插入图片</span></h1><p>使用markdown的语法：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](XXX博客文章名/XXX图片)</span><br></pre></td></tr></table></figure>
+<p>eg:<br>我在_post的博客文件夹下放一个6.png的图片，引入如下：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](Hexo中插入本地图片/6.png)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2018/09/02/Hexo中插入本地图片/6.png" alt=""></p>
+<p><img src="/2018/09/02/Hexo中插入本地图片/1.jpg" alt=""></p>
+<p>生成的img中路径【/2018/09/02/Hexo中插入本地图片/6.png】说明该插件生效了。</p>
+<h1><span id="预览">预览</span></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 生成静态文件 --&gt;</span></span><br><span class="line">hexo g </span><br><span class="line"><span class="comment">&lt;!-- 启动hexo服务 --&gt;</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>直接进入 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 即可访看到图片。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sela0629.github.io/2018/09/02/Hexo中插入本地图片/" data-id="cjlkcffd800011bq4juqunuwy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/09/02/Hexo生成文章目录/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo生成文章目录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/09/02/Hexo中插入本地图片/">Hexo中插入本地图片</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/02/Hexo生成文章目录/">Hexo生成文章目录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/29/Github上Hexo博客搭建教程/">Github上Hexo博客搭建教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/29/web常见安全问题&防御/">web常见安全问题&amp;防御</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/28/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Sela<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
