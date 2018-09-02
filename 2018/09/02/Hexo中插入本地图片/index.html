@@ -57,7 +57,7 @@
 		  <h1 class="header-author"><a href="/">Sela</a></h1>
 		</hgroup>
 		
-		<p class="header-subtitle">Sela的前端小天地</p>
+		<p class="header-subtitle">Sela的博客小天地</p>
 		
 
 		<nav class="header-menu">
@@ -74,10 +74,6 @@
     			
             
     			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
-    			
-            
-    			
     			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
     			
             
@@ -87,9 +83,9 @@
 				
 					<a class="github" target="_blank" href="https://github.com/sela0629" title="github"><i class="icon-github"></i></a>
 		        
-					<a class="qq" target="_blank" href="/598110274" title="qq"><i class="icon-qq"></i></a>
-		        
 					<a class="weixin" target="_blank" href="/syl598110274" title="weixin"><i class="icon-weixin"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:598110274@qq.com" title="mail"><i class="icon-mail"></i></a>
 		        
 			</div>
 		</nav>
@@ -113,7 +109,7 @@
 			  <h1 class="header-author js-header-author">Sela</h1>
 			</hgroup>
 			
-			<p class="header-subtitle"><i class="icon icon-quo-left"></i>Sela的前端小天地<i class="icon icon-quo-right"></i></p>
+			<p class="header-subtitle"><i class="icon icon-quo-left"></i>Sela的博客小天地<i class="icon icon-quo-right"></i></p>
 			
 			
 			
@@ -126,9 +122,9 @@
 					
 						<a class="github" target="_blank" href="https://github.com/sela0629" title="github"><i class="icon-github"></i></a>
 			        
-						<a class="qq" target="_blank" href="/598110274" title="qq"><i class="icon-qq"></i></a>
-			        
 						<a class="weixin" target="_blank" href="/syl598110274" title="weixin"><i class="icon-weixin"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:598110274@qq.com" title="mail"><i class="icon-mail"></i></a>
 			        
 				</div>
 			</nav>
@@ -180,21 +176,21 @@
 <li><a href="#预览">预览</a></li>
 </ul>
 <!-- tocstop -->
-<h1><span id="安装hexo-asset-image插件">安装hexo-asset-image插件</span></h1><p>使用如下命令安装插件</p>
+<h1 id="安装hexo-asset-image插件"><a href="#安装hexo-asset-image插件" class="headerlink" title="安装hexo-asset-image插件"></a>安装hexo-asset-image插件</h1><p>使用如下命令安装插件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install https://github.com/CodeFalling/hexo-asset-image --sav</span><br></pre></td></tr></table></figure>
 <p>插件安装完以后，实际上是存放在下面的目录文件夹下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\node_modules\hexo-asset-image</span><br></pre></td></tr></table></figure>
 <p>hexo-asset-image的原理应该是根据Hexo生成html后以时间的为目录的规则，将我们图片的相对地址转换成了生成后与时间对应目录的绝对地址。</p>
-<h1><span id="配置">配置</span></h1><p>图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过配置_config.yml来生成。</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过配置_config.yml来生成。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure>
 <p>将_config.yml文件中的配置项post_asset_folder设为true后，执行命令$ hexo new post_name，在source/_posts中会生成文章post_name.md和同名文件夹post_name。将图片资源放在post_name中，文章就可以使用相对路径引用图片资源了。</p>
-<h1><span id="插入图片">插入图片</span></h1><p>使用markdown的语法：</p>
+<h1 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h1><p>使用markdown的语法：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](XXX博客文章名/XXX图片)</span><br></pre></td></tr></table></figure>
 <p>eg:<br>我在_post的博客文件夹下放一个6.png的图片，引入如下：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](Hexo中插入本地图片/6.png)</span><br></pre></td></tr></table></figure></p>
 <p><img src="/2018/09/02/Hexo中插入本地图片/6.png" alt=""></p>
 <p><img src="/2018/09/02/Hexo中插入本地图片/1.jpg" alt=""></p>
 <p>生成的img中路径【/2018/09/02/Hexo中插入本地图片/6.png】说明该插件生效了。</p>
-<h1><span id="预览">预览</span></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 生成静态文件 --&gt;</span></span><br><span class="line">hexo g </span><br><span class="line"><span class="comment">&lt;!-- 启动hexo服务 --&gt;</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<h1 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 生成静态文件 --&gt;</span></span><br><span class="line">hexo g </span><br><span class="line"><span class="comment">&lt;!-- 启动hexo服务 --&gt;</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
 <p>直接进入 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 即可访看到图片。</p>
 
       
@@ -329,7 +325,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">安装hexo-asset-image插件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">插入图片</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">预览</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装hexo-asset-image插件"><span class="toc-number">1.</span> <span class="toc-text">安装hexo-asset-image插件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#配置"><span class="toc-number">2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#插入图片"><span class="toc-number">3.</span> <span class="toc-text">插入图片</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#预览"><span class="toc-number">4.</span> <span class="toc-text">预览</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -341,26 +337,6 @@
 
 
   
-  <div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Hexo中插入本地图片" data-title="Hexo中插入本地图片" data-url="https://sela0629.github.io/2018/09/02/Hexo中插入本地图片/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"true"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-  
   
   
 
@@ -369,6 +345,26 @@
   
 
   
+
+  <!-- valine sela new add -->
+  
+    <div id="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+new Valine({
+    el: '#comment' ,
+    notify:false, 
+    verify:false, 
+    appId: 'qWVNgtH5q4quNADlmtBpFrTp-gzGzoHsz',
+    appKey: 'kkW22iLP3u7ntIpzFxrogtlq',
+    placeholder: 'ヾﾉ≧∀≦)o欢迎评论!',
+    path:window.location.pathname, 
+    avatar:'mm' 
+});
+</script>
+    
+
 
 
           </div>
@@ -422,25 +418,17 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
       
       
     
-      
-      
-      
-    
     
 
     <ul style="width: 70%">
     
     
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
       
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友链</a></li>
-      
-        
-      
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
       
         
     </ul>
@@ -511,38 +499,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     	</section>
     
 
-    
-    	<section class="tools-section tools-section-friends" q-show="friends">
-  		
-        <ul class="search-ul">
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接1</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接2</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接3</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接4</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接5</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接6</a>
-            </li>
-          
-        </ul>
-  		
-    	</section>
     
 
     
