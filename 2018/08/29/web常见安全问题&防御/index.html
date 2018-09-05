@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://sela0629.github.io/2018/08/29/web常见安全问题&防御/5.png">
 <meta property="og:image" content="https://sela0629.github.io/2018/08/29/web常见安全问题&防御/6.png">
 <meta property="og:image" content="https://sela0629.github.io/2018/08/29/web常见安全问题&防御/7.png">
-<meta property="og:updated_time" content="2018-09-02T12:56:07.553Z">
+<meta property="og:updated_time" content="2018-09-05T04:33:30.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="web常见安全问题&amp;防御">
 <meta name="twitter:description" content="Xss 什么是xss攻击 Xss攻击分类 如何防御xss 项目中XSS防御： 1.php输出：使用htmlspecialchars()函数。 2.js中使用xss过滤：     Sql注入 什么是sql注入 Sql注入分类 1.数字注入 2.字符串注入   如何预防SQL注入 项目中sql注入防御   Csrf 什么是csrf CSRF的原理 简单示例： 如何预防CSRF 1.最基本的手段：涉">
@@ -321,26 +321,28 @@
 <p>缺点：<br>局限性非常大：XMLHttpRequest请求通常用于Ajax，并非所有的请求都适合用这个类来发起，而且通过该类请求得到的页面不能被浏览器所记录下，造成不便。</p>
 <p>对于旧网站，要把所有请求都改为XMLHttpRequest请求，这样几乎是要重写整个网站，这代价无疑是不能接受的。</p>
 <h2 id="项目中csrf防御"><a href="#项目中csrf防御" class="headerlink" title="项目中csrf防御"></a>项目中csrf防御</h2><p>Csrf主要预防在于服务端，目前项目中使用验证码和HTTP Referer等机制。前端需要做的主要是请求尽量都用post，提高攻击门槛。</p>
-<h1 id="参考资料"><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><p>前端安全知多少</p>
-<p><a href="https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&amp;mid=2247483770&amp;idx=1&amp;sn=4f2247fdf7e1de9d8c45539c09751ba4&amp;chksm=fbb58ab3ccc203a50abf225bdf6db56d10f5b0030cb9f333b245ebb95f8c440673901f7d6c23#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&amp;mid=2247483770&amp;idx=1&amp;sn=4f2247fdf7e1de9d8c45539c09751ba4&amp;chksm=fbb58ab3ccc203a50abf225bdf6db56d10f5b0030cb9f333b245ebb95f8c440673901f7d6c23#rd</a></p>
-<p>跨站脚本攻击(Cross-site scripting)</p>
-<p><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Cross-site_scripting" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Glossary/Cross-site_scripting</a></p>
-<p>XSS攻击常识及常见的XSS攻击脚本汇总</p>
-<p><a href="https://lvtao.net/dev/xss.html" target="_blank" rel="noopener">https://lvtao.net/dev/xss.html</a></p>
-<p>XSS 攻击和防御</p>
-<p><a href="https://winixt.me/XSS%E6%94%BB%E5%87%BB%E5%92%8C%E9%98%B2%E5%BE%A1/" target="_blank" rel="noopener">https://winixt.me/XSS%E6%94%BB%E5%87%BB%E5%92%8C%E9%98%B2%E5%BE%A1/</a></p>
-<p>渗透攻防Web篇-SQL注入攻击初级</p>
-<p><a href="https://paper.seebug.org/15/" target="_blank" rel="noopener">https://paper.seebug.org/15/</a></p>
-<p>SQL注入攻击与防御</p>
-<p><a href="https://www.jianshu.com/p/ba35a7e1c67d" target="_blank" rel="noopener">https://www.jianshu.com/p/ba35a7e1c67d</a></p>
-<p>SQL注入攻击常见方式及测试方法</p>
-<p><a href="https://blog.csdn.net/github_36032947/article/details/78442189" target="_blank" rel="noopener">https://blog.csdn.net/github_36032947/article/details/78442189</a></p>
-<p>CodeIgniter源码分析 7.2 - 数据库驱动之查询构造器</p>
-<p><a href="https://www.jianshu.com/p/12f6135acace" target="_blank" rel="noopener">https://www.jianshu.com/p/12f6135acace</a></p>
-<p>对于跨站伪造请求（CSRF）的理解和总结</p>
-<p><a href="https://www.imooc.com/article/13552" target="_blank" rel="noopener">https://www.imooc.com/article/13552</a></p>
-<p>浅谈CSRF攻击方式</p>
-<p><a href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" target="_blank" rel="noopener">http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html</a></p>
+<h1 id="参考资料"><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><ul>
+<li><p><a href="https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&amp;mid=2247483770&amp;idx=1&amp;sn=4f2247fdf7e1de9d8c45539c09751ba4&amp;chksm=fbb58ab3ccc203a50abf225bdf6db56d10f5b0030cb9f333b245ebb95f8c440673901f7d6c23#rd" target="_blank" rel="noopener">前端安全知多少</a></p>
+</li>
+<li><p><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Cross-site_scripting" target="_blank" rel="noopener">跨站脚本攻击(Cross-site scripting)</a></p>
+</li>
+<li><p><a href="https://lvtao.net/dev/xss.html" target="_blank" rel="noopener">XSS攻击常识及常见的XSS攻击脚本汇总</a></p>
+</li>
+<li><p><a href="https://winixt.me/XSS%E6%94%BB%E5%87%BB%E5%92%8C%E9%98%B2%E5%BE%A1/" target="_blank" rel="noopener">XSS 攻击和防御</a></p>
+</li>
+<li><p><a href="https://paper.seebug.org/15/" target="_blank" rel="noopener">渗透攻防Web篇-SQL注入攻击初级</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/ba35a7e1c67d" target="_blank" rel="noopener">SQL注入攻击与防御</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/github_36032947/article/details/78442189" target="_blank" rel="noopener">SQL注入攻击常见方式及测试方法</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/12f6135acace" target="_blank" rel="noopener">CodeIgniter源码分析 7.2 - 数据库驱动之查询构造器</a></p>
+</li>
+<li><p><a href="https://www.imooc.com/article/13552" target="_blank" rel="noopener">对于跨站伪造请求（CSRF）的理解和总结</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" target="_blank" rel="noopener">浅谈CSRF攻击方式</a></p>
+</li>
+</ul>
 
       
 
@@ -505,8 +507,15 @@
   
 
   <!-- valine sela new add -->
-  
-    <div id="comment"></div>
+  <!--  -->
+
+    
+      <section id="comments" class="comments">
+        <style>
+          .comments{margin:30px;padding:10px;background:#fff}
+          @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+        </style>
+        <!-- <div id="comment"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
 <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 <script>
@@ -514,13 +523,37 @@ new Valine({
     el: '#comment' ,
     notify:false, 
     verify:false, 
-    appId: 'qWVNgtH5q4quNADlmtBpFrTp-gzGzoHsz',
-    appKey: 'kkW22iLP3u7ntIpzFxrogtlq',
+    appId: '',
+    appKey: '',
     placeholder: 'ヾﾉ≧∀≦)o欢迎评论!',
     path:window.location.pathname, 
     avatar:'mm' 
 });
+</script> -->
+
+<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "qWVNgtH5q4quNADlmtBpFrTp-gzGzoHsz",
+            app_key: "kkW22iLP3u7ntIpzFxrogtlq",
+            placeholder: "ヾﾉ≧∀≦)o欢迎评论!",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
 </script>
+
+
+      </section>
     
 
 
@@ -612,6 +645,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
             
             <div class="clearfix"></div>

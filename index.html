@@ -143,6 +143,121 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-hexo主题yilia自定义添加valine评论系统" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/05/hexo主题yilia自定义添加valine评论系统/">hexo主题yilia自定义添加valine评论系统</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/05/hexo主题yilia自定义添加valine评论系统/" class="archive-article-date">
+  	<time datetime="2018-09-05T02:16:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="寻寻觅觅-hexo好用的评论系统"><a href="#寻寻觅觅-hexo好用的评论系统" class="headerlink" title="寻寻觅觅-hexo好用的评论系统"></a>寻寻觅觅-hexo好用的评论系统</h1><p>Hexo的评论系统有很多，常见的有以下几个</p>
+<p>多说，网易云跟帖，畅言，来必力（LiveRe），Disqus，Hypercomments，valine</p>
+<p>多说和网易云已经倒下了，其次畅言需要备案，Disqus，Hypercomments和LiveRe都是国外的，加载速度贼慢，甚至有被墙的可能，寻觅了很久之后，终于找到口碑比较好的<a href="https://valine.js.org/" target="_blank" rel="noopener">valine - 一款快速、简洁且高效的无后端评论系统</a>。</p>
+<h1 id="valine特性"><a href="#valine特性" class="headerlink" title="valine特性"></a>valine特性</h1><ul>
+<li>快速</li>
+<li>安全</li>
+<li>Emoji 😉</li>
+<li>无后端实现</li>
+<li>MarkDown 全语法支持</li>
+<li>轻量易用(~15kb gzipped)</li>
+<li>文章阅读量统计 v1.2.0+</li>
+</ul>
+<blockquote>
+<p>Valine 诞生于2017年8月7日，是一款基于Leancloud的快速、简洁且高效的无后端评论系统。<br>理论上支持但不限于静态博客，目前已有Hexo、Jekyll、Typecho、Hugo 等博客程序在使用Valine。<br>但是我喜欢的yilia主题不支持，所以想着如何自定义valine评论系统。</p>
+</blockquote>
+<h1 id="yilia主题如何支持valine评论系统"><a href="#yilia主题如何支持valine评论系统" class="headerlink" title="yilia主题如何支持valine评论系统"></a>yilia主题如何支持valine评论系统</h1><p>google搜啊搜，果然还是搜到相关轮子。</p>
+<p><a href="https://github.com/litten/hexo-theme-yilia/pull/646" target="_blank" rel="noopener">新增对Valine评论系统的支持</a><br><a href="https://www.xxwhite.com/2017/Valine.html" target="_blank" rel="noopener">加个Valine评论系统</a></p>
+<p>下面整理下实践步骤：</p>
+<h2 id="修改主题模板"><a href="#修改主题模板" class="headerlink" title="修改主题模板"></a>修改主题模板</h2><h3 id="新增配置项-themesyilia_configyml"><a href="#新增配置项-themes-yilia-config-yml" class="headerlink" title="新增配置项 /themes/yilia/_config.yml"></a>新增配置项 /themes/yilia/_config.yml</h3><p>新增下面代码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#6、Valine https://valine.js.org</span><br><span class="line">valine: </span><br><span class="line"> appid:  #Leancloud应用的appId</span><br><span class="line"> appkey:  #Leancloud应用的appKey</span><br><span class="line"> verify: false #验证码</span><br><span class="line"> notify: false #评论回复提醒</span><br><span class="line"> avatar: '' #评论列表头像样式：''/mm/identicon/monsterid/wavatar/retro/hide</span><br><span class="line"> avatar_cdn: 'https://sdn.geekzu.org/avatar/' #头像CDN</span><br><span class="line"> placeholder: '瞎白话' #评论框占位符</span><br><span class="line"> pageSize: 15 #评论分页</span><br></pre></td></tr></table></figure>
+<p>其中verify和notify一定要是false，不要打开，不要手贱<br>avatar参数详见<a href="https://valine.js.org/avatar" target="_blank" rel="noopener">https://valine.js.org/avatar</a><br>在这里设置头像<a href="https://cn.gravatar.com/" target="_blank" rel="noopener">https://cn.gravatar.com/</a></p>
+<h3 id="新增模板和局部样式-themesyilialayout_partialarticleejs"><a href="#新增模板和局部样式-themes-yilia-layout-partial-article-ejs" class="headerlink" title="新增模板和局部样式 /themes/yilia/layout/_partial/article.ejs"></a>新增模板和局部样式 /themes/yilia/layout/_partial/article.ejs</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (theme.valine &amp;&amp; theme.valine.appid &amp;&amp; theme.valine.appkey)&#123; %&gt;</span><br><span class="line">      &lt;section id=<span class="string">"comments"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"comments"</span>&gt;</span><br><span class="line">        &lt;style&gt;</span><br><span class="line">          .comments&#123;margin:30px;padding:10px;background:#fff&#125;</span><br><span class="line">          @media screen and (max-width:800px)&#123;.comments&#123;margin:auto;padding:10px;background:#fff&#125;&#125;</span><br><span class="line">        &lt;<span class="regexp">/style&gt;</span></span><br><span class="line"><span class="regexp">        &lt;%- partial('post/</span>valine<span class="string">', &#123;</span></span><br><span class="line"><span class="string">          key: post.slug,</span></span><br><span class="line"><span class="string">          title: post.title,</span></span><br><span class="line"><span class="string">          url: config.url+url_for(post.path)</span></span><br><span class="line"><span class="string">          &#125;) %&gt;</span></span><br><span class="line"><span class="string">      &lt;/section&gt;</span></span><br><span class="line"><span class="string">    &lt;% &#125; %&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="新增-themesyilialayout_partialpostvalineejs"><a href="#新增-themes-yilia-layout-partial-post-valine-ejs" class="headerlink" title="新增 /themes/yilia/layout/_partial/post/valine.ejs"></a>新增 /themes/yilia/layout/_partial/post/valine.ejs</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"vcomment"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"comment"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;script src=<span class="string">"//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script src=<span class="string">"//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script src=<span class="string">'//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script&gt;</span><br><span class="line">   <span class="keyword">var</span> notify = <span class="string">'&lt;%= theme.valine.notify %&gt;'</span> == <span class="literal">true</span> ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">var</span> verify = <span class="string">'&lt;%= theme.valine.verify %&gt;'</span> == <span class="literal">true</span> ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">new</span> Valine(&#123;</span><br><span class="line">            av: AV,</span><br><span class="line">            el: <span class="string">'#vcomment'</span>,</span><br><span class="line">            notify: notify,</span><br><span class="line">            verify: verify,</span><br><span class="line">            app_id: <span class="string">"&lt;%= theme.valine.appid %&gt;"</span>,</span><br><span class="line">            app_key: <span class="string">"&lt;%= theme.valine.appkey %&gt;"</span>,</span><br><span class="line">            placeholder: <span class="string">"&lt;%= theme.valine.placeholder %&gt;"</span>,</span><br><span class="line">            avatar: <span class="string">"&lt;%= theme.valine.avatar %&gt;"</span>,</span><br><span class="line">            avatar_cdn: <span class="string">"&lt;%= theme.valine.avatar_cdn %&gt;"</span>,</span><br><span class="line">            pageSize: <span class="string">"&lt;%= theme.valine.pageSize %&gt;"</span></span><br><span class="line">    &#125;);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>听说有坑=》这里要注意一下el参数，el参数要和上面的id一致。<br>具体有哪些参数可以自己定义，可以看这里<a href="https://valine.js.org/configuration" target="_blank" rel="noopener">https://valine.js.org/configuration</a></p>
+<h2 id="注册leancloud应用-数据存储"><a href="#注册LeanCloud应用-数据存储" class="headerlink" title="注册LeanCloud应用-数据存储"></a>注册LeanCloud应用-数据存储</h2><p>注册链接：<br><a href="https://leancloud.cn/" target="_blank" rel="noopener">https://leancloud.cn/</a></p>
+<p>注册好后创建应用，选择开发版本。</p>
+<p><img src="/2018/09/05/hexo主题yilia自定义添加valine评论系统/1.png" alt=""></p>
+<p>appid和appkey写到上面主题配置项中。</p>
+<p><img src="/2018/09/05/hexo主题yilia自定义添加valine评论系统/2.png" alt=""></p>
+<p>添加的安全域名，即可直接预览实际效果了。</p>
+<p><img src="/2018/09/05/hexo主题yilia自定义添加valine评论系统/3.png" alt=""></p>
+<p>实际效果如下：可访问体验=&gt;<a href="https://sela0629.github.io/">sela博客</a><br><img src="/2018/09/05/hexo主题yilia自定义添加valine评论系统/4.png" alt=""></p>
+<p>想了解更详细的配置可看<a href="https://github.com/codefine/hexo-theme-mellow/wiki/3.-%E5%9F%BA%E4%BA%8Eleancloud%E7%9A%84%E6%96%87%E7%AB%A0%E9%98%85%E8%AF%BB%E9%87%8F%E4%B8%8E%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F-valine" target="_blank" rel="noopener">基于leancloud的文章阅读量与评论系统 valine</a></p>
+<p>参考资料：</p>
+<ul>
+<li><p><a href="https://github.com/litten/hexo-theme-yilia/pull/646" target="_blank" rel="noopener">新增对Valine评论系统的支持</a></p>
+</li>
+<li><p><a href="https://www.xxwhite.com/2017/Valine.html" target="_blank" rel="noopener">加个Valine评论系统</a></p>
+</li>
+<li><p><a href="https://github.com/codefine/hexo-theme-mellow/wiki/3.-%E5%9F%BA%E4%BA%8Eleancloud%E7%9A%84%E6%96%87%E7%AB%A0%E9%98%85%E8%AF%BB%E9%87%8F%E4%B8%8E%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F-valine" target="_blank" rel="noopener">基于leancloud的文章阅读量与评论系统 valine</a></p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/05/hexo主题yilia自定义添加valine评论系统/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Hexo中插入本地图片" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -275,8 +390,9 @@
 <blockquote>
 <p>maxDepth 表示目录深度为3，即最多生成三级目录。</p>
 </blockquote>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>hexo-toc</p>
-<p><a href="https://www.npmjs.com/package/hexo-toc" target="_blank" rel="noopener">https://www.npmjs.com/package/hexo-toc</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://www.npmjs.com/package/hexo-toc" target="_blank" rel="noopener">hexo-toc</a></li>
+</ul>
 
       
 
@@ -419,18 +535,25 @@
 <p>生成静态文件和部署</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo d</span><br></pre></td></tr></table></figure>
 <p>最后出现如下提示代表成功啦！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO Deploy done:git</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO Deploy done:git</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>d即deploy</p>
 </blockquote>
 <p>7 设置访问github的page页</p>
 <p>在仓库的 setting 一栏，当以 github账号名.github.io创建的仓库时会自动开启github pages</p>
 <p>参考资料：</p>
-<p>Hexo 博客搭建指南<br><a href="https://github.com/limedroid/HexoLearning" target="_blank" rel="noopener">https://github.com/limedroid/HexoLearning</a></p>
-<p>Hexo 博客部署到 GitHub<br><a href="https://www.cnblogs.com/imapla/p/5533000.html" target="_blank" rel="noopener">https://www.cnblogs.com/imapla/p/5533000.html</a></p>
-<p>我是如何利用Github Pages搭建起我的博客，细数一路的坑<br><a href="https://www.cnblogs.com/jackyroc/p/7681938.html" target="_blank" rel="noopener">https://www.cnblogs.com/jackyroc/p/7681938.html</a></p>
-<p>Hexo搭建博客教程<br><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/</a></p>
-<p>Hexo添加Toc支持，生成文章目录<br><a href="https://imys.net/20150514/hexo-toc.html" target="_blank" rel="noopener">https://imys.net/20150514/hexo-toc.html</a></p>
+<ul>
+<li><p><a href="https://github.com/limedroid/HexoLearning" target="_blank" rel="noopener">Hexo 博客搭建指南</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/imapla/p/5533000.html" target="_blank" rel="noopener">Hexo 博客部署到 GitHub</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/jackyroc/p/7681938.html" target="_blank" rel="noopener">我是如何利用Github Pages搭建起我的博客，细数一路的坑</a></p>
+</li>
+<li><p><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">Hexo搭建博客教程</a></p>
+</li>
+<li><p><a href="https://imys.net/20150514/hexo-toc.html" target="_blank" rel="noopener">Hexo添加Toc支持，生成文章目录</a></p>
+</li>
+</ul>
 
       
 
@@ -652,26 +775,28 @@
 <p>缺点：<br>局限性非常大：XMLHttpRequest请求通常用于Ajax，并非所有的请求都适合用这个类来发起，而且通过该类请求得到的页面不能被浏览器所记录下，造成不便。</p>
 <p>对于旧网站，要把所有请求都改为XMLHttpRequest请求，这样几乎是要重写整个网站，这代价无疑是不能接受的。</p>
 <h2 id="项目中csrf防御"><a href="#项目中csrf防御" class="headerlink" title="项目中csrf防御"></a>项目中csrf防御</h2><p>Csrf主要预防在于服务端，目前项目中使用验证码和HTTP Referer等机制。前端需要做的主要是请求尽量都用post，提高攻击门槛。</p>
-<h1 id="参考资料"><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><p>前端安全知多少</p>
-<p><a href="https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&amp;mid=2247483770&amp;idx=1&amp;sn=4f2247fdf7e1de9d8c45539c09751ba4&amp;chksm=fbb58ab3ccc203a50abf225bdf6db56d10f5b0030cb9f333b245ebb95f8c440673901f7d6c23#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&amp;mid=2247483770&amp;idx=1&amp;sn=4f2247fdf7e1de9d8c45539c09751ba4&amp;chksm=fbb58ab3ccc203a50abf225bdf6db56d10f5b0030cb9f333b245ebb95f8c440673901f7d6c23#rd</a></p>
-<p>跨站脚本攻击(Cross-site scripting)</p>
-<p><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Cross-site_scripting" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Glossary/Cross-site_scripting</a></p>
-<p>XSS攻击常识及常见的XSS攻击脚本汇总</p>
-<p><a href="https://lvtao.net/dev/xss.html" target="_blank" rel="noopener">https://lvtao.net/dev/xss.html</a></p>
-<p>XSS 攻击和防御</p>
-<p><a href="https://winixt.me/XSS%E6%94%BB%E5%87%BB%E5%92%8C%E9%98%B2%E5%BE%A1/" target="_blank" rel="noopener">https://winixt.me/XSS%E6%94%BB%E5%87%BB%E5%92%8C%E9%98%B2%E5%BE%A1/</a></p>
-<p>渗透攻防Web篇-SQL注入攻击初级</p>
-<p><a href="https://paper.seebug.org/15/" target="_blank" rel="noopener">https://paper.seebug.org/15/</a></p>
-<p>SQL注入攻击与防御</p>
-<p><a href="https://www.jianshu.com/p/ba35a7e1c67d" target="_blank" rel="noopener">https://www.jianshu.com/p/ba35a7e1c67d</a></p>
-<p>SQL注入攻击常见方式及测试方法</p>
-<p><a href="https://blog.csdn.net/github_36032947/article/details/78442189" target="_blank" rel="noopener">https://blog.csdn.net/github_36032947/article/details/78442189</a></p>
-<p>CodeIgniter源码分析 7.2 - 数据库驱动之查询构造器</p>
-<p><a href="https://www.jianshu.com/p/12f6135acace" target="_blank" rel="noopener">https://www.jianshu.com/p/12f6135acace</a></p>
-<p>对于跨站伪造请求（CSRF）的理解和总结</p>
-<p><a href="https://www.imooc.com/article/13552" target="_blank" rel="noopener">https://www.imooc.com/article/13552</a></p>
-<p>浅谈CSRF攻击方式</p>
-<p><a href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" target="_blank" rel="noopener">http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html</a></p>
+<h1 id="参考资料"><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><ul>
+<li><p><a href="https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&amp;mid=2247483770&amp;idx=1&amp;sn=4f2247fdf7e1de9d8c45539c09751ba4&amp;chksm=fbb58ab3ccc203a50abf225bdf6db56d10f5b0030cb9f333b245ebb95f8c440673901f7d6c23#rd" target="_blank" rel="noopener">前端安全知多少</a></p>
+</li>
+<li><p><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Cross-site_scripting" target="_blank" rel="noopener">跨站脚本攻击(Cross-site scripting)</a></p>
+</li>
+<li><p><a href="https://lvtao.net/dev/xss.html" target="_blank" rel="noopener">XSS攻击常识及常见的XSS攻击脚本汇总</a></p>
+</li>
+<li><p><a href="https://winixt.me/XSS%E6%94%BB%E5%87%BB%E5%92%8C%E9%98%B2%E5%BE%A1/" target="_blank" rel="noopener">XSS 攻击和防御</a></p>
+</li>
+<li><p><a href="https://paper.seebug.org/15/" target="_blank" rel="noopener">渗透攻防Web篇-SQL注入攻击初级</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/ba35a7e1c67d" target="_blank" rel="noopener">SQL注入攻击与防御</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/github_36032947/article/details/78442189" target="_blank" rel="noopener">SQL注入攻击常见方式及测试方法</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/12f6135acace" target="_blank" rel="noopener">CodeIgniter源码分析 7.2 - 数据库驱动之查询构造器</a></p>
+</li>
+<li><p><a href="https://www.imooc.com/article/13552" target="_blank" rel="noopener">对于跨站伪造请求（CSRF）的理解和总结</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" target="_blank" rel="noopener">浅谈CSRF攻击方式</a></p>
+</li>
+</ul>
 
       
 
@@ -886,6 +1011,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
             
             <div class="clearfix"></div>

@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Sela乐园">
 <meta property="og:description" content="Hexo 介绍 环境准备   Hexo 介绍Hexo是基于NodeJs的静态博客框架，简单、轻量，其生成的静态网页可以托管在Github和Heroku上。超快速度支持MarkDown一键部署丰富的插件 下面以我的博客为例，https://sela0629.github.io 环境准备 安装node.js  通过homebrew安装。 安装好homebrew后在终端安装node。 123brew">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-02T04:36:26.566Z">
+<meta property="og:updated_time" content="2018-09-05T04:28:34.860Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Github上Hexo博客搭建教程">
 <meta name="twitter:description" content="Hexo 介绍 环境准备   Hexo 介绍Hexo是基于NodeJs的静态博客框架，简单、轻量，其生成的静态网页可以托管在Github和Heroku上。超快速度支持MarkDown一键部署丰富的插件 下面以我的博客为例，https://sela0629.github.io 环境准备 安装node.js  通过homebrew安装。 安装好homebrew后在终端安装node。 123brew">
@@ -234,18 +234,25 @@
 <p>生成静态文件和部署</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo d</span><br></pre></td></tr></table></figure>
 <p>最后出现如下提示代表成功啦！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO Deploy done:git</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO Deploy done:git</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>d即deploy</p>
 </blockquote>
 <p>7 设置访问github的page页</p>
 <p>在仓库的 setting 一栏，当以 github账号名.github.io创建的仓库时会自动开启github pages</p>
 <p>参考资料：</p>
-<p>Hexo 博客搭建指南<br><a href="https://github.com/limedroid/HexoLearning" target="_blank" rel="noopener">https://github.com/limedroid/HexoLearning</a></p>
-<p>Hexo 博客部署到 GitHub<br><a href="https://www.cnblogs.com/imapla/p/5533000.html" target="_blank" rel="noopener">https://www.cnblogs.com/imapla/p/5533000.html</a></p>
-<p>我是如何利用Github Pages搭建起我的博客，细数一路的坑<br><a href="https://www.cnblogs.com/jackyroc/p/7681938.html" target="_blank" rel="noopener">https://www.cnblogs.com/jackyroc/p/7681938.html</a></p>
-<p>Hexo搭建博客教程<br><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/</a></p>
-<p>Hexo添加Toc支持，生成文章目录<br><a href="https://imys.net/20150514/hexo-toc.html" target="_blank" rel="noopener">https://imys.net/20150514/hexo-toc.html</a></p>
+<ul>
+<li><p><a href="https://github.com/limedroid/HexoLearning" target="_blank" rel="noopener">Hexo 博客搭建指南</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/imapla/p/5533000.html" target="_blank" rel="noopener">Hexo 博客部署到 GitHub</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/jackyroc/p/7681938.html" target="_blank" rel="noopener">我是如何利用Github Pages搭建起我的博客，细数一路的坑</a></p>
+</li>
+<li><p><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">Hexo搭建博客教程</a></p>
+</li>
+<li><p><a href="https://imys.net/20150514/hexo-toc.html" target="_blank" rel="noopener">Hexo添加Toc支持，生成文章目录</a></p>
+</li>
+</ul>
 
       
 
@@ -410,8 +417,15 @@
   
 
   <!-- valine sela new add -->
-  
-    <div id="comment"></div>
+  <!--  -->
+
+    
+      <section id="comments" class="comments">
+        <style>
+          .comments{margin:30px;padding:10px;background:#fff}
+          @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+        </style>
+        <!-- <div id="comment"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
 <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 <script>
@@ -419,13 +433,37 @@ new Valine({
     el: '#comment' ,
     notify:false, 
     verify:false, 
-    appId: 'qWVNgtH5q4quNADlmtBpFrTp-gzGzoHsz',
-    appKey: 'kkW22iLP3u7ntIpzFxrogtlq',
+    appId: '',
+    appKey: '',
     placeholder: 'ヾﾉ≧∀≦)o欢迎评论!',
     path:window.location.pathname, 
     avatar:'mm' 
 });
+</script> -->
+
+<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "qWVNgtH5q4quNADlmtBpFrTp-gzGzoHsz",
+            app_key: "kkW22iLP3u7ntIpzFxrogtlq",
+            placeholder: "ヾﾉ≧∀≦)o欢迎评论!",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
 </script>
+
+
+      </section>
     
 
 
@@ -517,6 +555,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
             
             <div class="clearfix"></div>

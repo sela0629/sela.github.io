@@ -296,6 +296,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2018/09/05/hexo主题yilia自定义添加valine评论系统/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          hexo主题yilia自定义添加valine评论系统
+        
+      </div>
+    </a>
+  
   
     <a href="/2018/09/02/Hexo生成文章目录/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">Hexo生成文章目录</div>
@@ -347,8 +356,15 @@
   
 
   <!-- valine sela new add -->
-  
-    <div id="comment"></div>
+  <!--  -->
+
+    
+      <section id="comments" class="comments">
+        <style>
+          .comments{margin:30px;padding:10px;background:#fff}
+          @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+        </style>
+        <!-- <div id="comment"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
 <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 <script>
@@ -356,13 +372,37 @@ new Valine({
     el: '#comment' ,
     notify:false, 
     verify:false, 
-    appId: 'qWVNgtH5q4quNADlmtBpFrTp-gzGzoHsz',
-    appKey: 'kkW22iLP3u7ntIpzFxrogtlq',
+    appId: '',
+    appKey: '',
     placeholder: 'ヾﾉ≧∀≦)o欢迎评论!',
     path:window.location.pathname, 
     avatar:'mm' 
 });
+</script> -->
+
+<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "qWVNgtH5q4quNADlmtBpFrTp-gzGzoHsz",
+            app_key: "kkW22iLP3u7ntIpzFxrogtlq",
+            placeholder: "ヾﾉ≧∀≦)o欢迎评论!",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
 </script>
+
+
+      </section>
     
 
 
@@ -454,6 +494,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">web安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
             
             <div class="clearfix"></div>
