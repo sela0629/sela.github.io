@@ -139,6 +139,538 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-微信小程序原理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/08/微信小程序原理/">微信小程序原理(随记)</a>
+    </h1>
+  
+
+
+<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
+<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
+
+  <a href="javascript:;" class="archive-article-date">
+      <i class="icon-smile icon"></i> 阅读数:<span id="/2018/09/08/微信小程序原理/" class="pageViews">0</span>次
+  </a>
+
+        
+        <a href="/2018/09/08/微信小程序原理/" class="archive-article-date">
+  	<time datetime="2018-09-08T02:16:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#逻辑层-app-service">逻辑层 App Service</a><ul>
+<li><a href="#注册程序">注册程序</a></li>
+<li><a href="#注册页面">注册页面</a><ul>
+<li><a href="#生命周期">生命周期</a></li>
+</ul>
+</li>
+<li><a href="#路由">路由</a></li>
+<li><a href="#文件作用域">文件作用域</a></li>
+<li><a href="#模块化">模块化</a></li>
+</ul>
+</li>
+<li><a href="#视图层-view">视图层 View</a><ul>
+<li><a href="#wxs-模块">WXS 模块</a></li>
+</ul>
+</li>
+<li><a href="#自定义组件">自定义组件</a></li>
+<li><a href="#插件">插件</a></li>
+<li><a href="#参考资料">参考资料</a></li>
+</ul>
+<!-- tocstop -->
+<blockquote>
+<p>简单整理小程序原理，方便后面需要时查阅</p>
+</blockquote>
+<p>小程序开发框架的目标是通过尽可能简单、高效的方式让开发者可以在微信中开发具有原生 APP 体验的服务。</p>
+<p>框架提供了自己的视图层描述语言 WXML 和 WXSS，以及基于 JavaScript 的逻辑层框架，并在视图层与逻辑层间提供了数据传输和事件系统，让开发者能够专注于数据与逻辑。</p>
+<p>框架的核心是一个响应的数据绑定系统。</p>
+<p>响应的数据绑定<br>框架的核心是一个响应的数据绑定系统。</p>
+<p>整个小程序框架系统分为两部分：视图层（View）和逻辑层（App Service）</p>
+<p>框架可以让数据与视图非常简单地保持同步。当做数据修改的时候，只需要在逻辑层修改数据，视图层就会做相应的更新。</p>
+<h1 id="逻辑层-app-service"><a href="#逻辑层-App-Service" class="headerlink" title="逻辑层 App Service"></a>逻辑层 App Service</h1><p>小程序开发框架的逻辑层使用 JavaScript 引擎为小程序提供开发者 JavaScript 代码的运行环境以及微信小程序的特有功能。</p>
+<p>逻辑层将数据进行处理后发送给视图层，同时接受视图层的事件反馈。</p>
+<p>开发者写的所有代码最终将会打包成一份 JavaScript 文件，并在小程序启动的时候运行，直到小程序销毁。这一行为类似 ServiceWorker，所以逻辑层也称之为 App Service。</p>
+<p>在 JavaScript 的基础上，我们增加了一些功能，以方便小程序的开发：</p>
+<p>增加 App 和 Page 方法，进行程序和页面的注册。<br>增加 getApp 和 getCurrentPages 方法，分别用来获取 App 实例和当前页面栈。<br>提供丰富的 API，如微信用户数据，扫一扫，支付等微信特有能力。<br>每个页面有独立的作用域，并提供模块化能力。<br>注意：小程序框架的逻辑层并非运行在浏览器中，因此 JavaScript 在 web 中一些能力都无法使用，如 window，document 等。</p>
+<h2 id="注册程序"><a href="#注册程序" class="headerlink" title="注册程序"></a>注册程序</h2><p>小程序 App<br>App(Object)<br>App() 函数用来注册一个小程序。接受一个 Object 参数，其指定小程序的生命周期回调等。</p>
+<p>App() 必须在 app.js 中调用，必须调用且只能调用一次。不然会出现无法预期的后果。</p>
+<p>Object参数说明：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>类型</th>
+<th>描述</th>
+<th>触发时机</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onLaunch</td>
+<td>Function</td>
+<td>生命周期回调—监听小程序初始化</td>
+<td>小程序初始化完成时（全局只触发一次）</td>
+</tr>
+<tr>
+<td>onShow</td>
+<td>Function</td>
+<td>生命周期回调—监听小程序显示</td>
+<td>小程序启动，或从后台进入前台显示时</td>
+</tr>
+<tr>
+<td>onHide</td>
+<td>Function</td>
+<td>生命周期回调—监听小程序隐藏</td>
+<td>小程序从前台进入后台时</td>
+</tr>
+<tr>
+<td>onError</td>
+<td>Function</td>
+<td>错误监听函数</td>
+<td>小程序发生脚本错误，或者 api 调用失败时触发，会带上错误信息</td>
+</tr>
+<tr>
+<td>onPageNotFound</td>
+<td>Function</td>
+<td>页面不存在监听函数</td>
+<td>小程序要打开的页面不存在时触发，会带上页面信息回调该函数</td>
+</tr>
+<tr>
+<td>其他</td>
+<td>Any</td>
+<td>开发者可以添加任意的函数或数据到 Object 参数中，用 this 可以访问</td>
+<td>——–</td>
+</tr>
+</tbody>
+</table>
+<p>前台、后台定义： 当用户点击左上角关闭，或者按了设备 Home 键离开微信，小程序并没有直接销毁，而是进入了后台；当再次进入微信或再次打开小程序，又会从后台进入前台。需要注意的是：只有当小程序进入后台一定时间，或者系统资源占用过高，才会被真正的销毁。</p>
+<h2 id="注册页面"><a href="#注册页面" class="headerlink" title="注册页面"></a>注册页面</h2><p>页面 Page<br>Page(Object)<br>Page(Object) 函数用来注册一个页面。接受一个 Object 类型参数，其指定页面的初始数据、生命周期回调、事件处理函数等。</p>
+<p>Object 参数说明：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>Object</td>
+<td>页面的初始数据</td>
+</tr>
+<tr>
+<td>onLoad</td>
+<td>Function</td>
+<td>生命周期回调—监听页面加载</td>
+</tr>
+<tr>
+<td>onShow</td>
+<td>Function</td>
+<td>生命周期回调—监听页面显示</td>
+</tr>
+<tr>
+<td>onReady</td>
+<td>Function</td>
+<td>生命周期回调—监听页面初次渲染完成</td>
+</tr>
+<tr>
+<td>onHide</td>
+<td>Function</td>
+<td>生命周期回调—监听页面隐藏</td>
+</tr>
+<tr>
+<td>onUnload</td>
+<td>Function</td>
+<td>生命周期回调—监听页面卸载</td>
+</tr>
+<tr>
+<td>onPullDownRefresh</td>
+<td>Function</td>
+<td>监听用户下拉动作</td>
+</tr>
+<tr>
+<td>onReachBottom</td>
+<td>Function</td>
+<td>页面上拉触底事件的处理函数</td>
+</tr>
+<tr>
+<td>onShareAppMessage</td>
+<td>Function</td>
+<td>用户点击右上角转发</td>
+</tr>
+<tr>
+<td>onPageScroll</td>
+<td>Function</td>
+<td>页面滚动触发事件的处理函数</td>
+</tr>
+<tr>
+<td>onTabItemTap</td>
+<td>Function</td>
+<td>当前是 tab 页时，点击 tab 时触发</td>
+</tr>
+<tr>
+<td>其他</td>
+<td>Any</td>
+<td>开发者可以添加任意的函数或数据到 Object 参数中，在页面的函数中用 this 可以访问</td>
+</tr>
+</tbody>
+</table>
+<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><p>下图说明了 Page 实例的生命周期。</p>
+<p><img src="/2018/09/08/微信小程序原理/1.png" alt=""></p>
+<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><p>页面栈</p>
+<p>框架以栈的形式维护了当前的所有页面。 当发生路由切换的时候，页面栈的表现如下：</p>
+<table>
+<thead>
+<tr>
+<th>路由方式</th>
+<th>页面栈表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化</td>
+<td>新页面入栈</td>
+</tr>
+<tr>
+<td>打开新页面</td>
+<td>新页面入栈</td>
+</tr>
+<tr>
+<td>页面重定向</td>
+<td>当前页面出栈，新页面入栈</td>
+</tr>
+<tr>
+<td>页面返回</td>
+<td>页面不断出栈，直到目标返回页</td>
+</tr>
+<tr>
+<td>Tab 切换</td>
+<td>页面全部出栈，只留下新的 Tab 页面</td>
+</tr>
+<tr>
+<td>重加载</td>
+<td>页面全部出栈，只留下新的页面</td>
+</tr>
+</tbody>
+</table>
+<p>Tab 切换对应的生命周期（以 A、B 页面为 Tabbar 页面，C 是从 A 页面打开的页面，D 页面是从 C 页面打开的页面为例）：</p>
+<table>
+<thead>
+<tr>
+<th>当前页面</th>
+<th>路由后页面</th>
+<th>触发的生命周期（按顺序）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>Nothing happend</td>
+</tr>
+<tr>
+<td>A</td>
+<td>B</td>
+<td>A.onHide(), B.onLoad(), B.onShow()</td>
+</tr>
+<tr>
+<td>A</td>
+<td>B （再次打开）</td>
+<td>A.onHide(), B.onShow()</td>
+</tr>
+<tr>
+<td>C</td>
+<td>A</td>
+<td>C.onUnload(), A.onShow()</td>
+</tr>
+<tr>
+<td>C</td>
+<td>B</td>
+<td>C.onUnload(), B.onLoad(), B.onShow()</td>
+</tr>
+<tr>
+<td>D</td>
+<td>B</td>
+<td>D.onUnload(), C.onUnload(), B.onLoad(), B.onShow()</td>
+</tr>
+<tr>
+<td>D (从转发进入）</td>
+<td>A</td>
+<td>D.onUnload(), A.onLoad(), A.onShow()</td>
+</tr>
+<tr>
+<td>D（从转发进入）</td>
+<td>B</td>
+<td>D.onUnload(), B.onLoad(), B.onShow()</td>
+</tr>
+</tbody>
+</table>
+<p>Tips:</p>
+<ul>
+<li>navigateTo, redirectTo 只能打开非 tabBar 页面。</li>
+<li>switchTab 只能打开 tabBar 页面。</li>
+<li>reLaunch 可以打开任意页面。</li>
+<li>页面底部的 tabBar 由页面决定，即只要是定义为tabBar 的页面，底部都有 tabBar。</li>
+<li>调用页面路由带的参数可以在目标页面的onLoad中获取。</li>
+</ul>
+<h2 id="文件作用域"><a href="#文件作用域" class="headerlink" title="文件作用域"></a>文件作用域</h2><p>通过全局函数 getApp() 可以获取全局的应用实例，如果需要全局的数据可以在 App() 中设置，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line">App(&#123;</span><br><span class="line">  globalData: <span class="number">1</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h2><p>可以将一些公共的代码抽离成为一个单独的 js 文件，作为一个模块。模块只有通过 module.exports 或者 exports 才能对外暴露接口。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// common.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHello</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Hello <span class="subst">$&#123;name&#125;</span> !`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayGoodbye</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Goodbye <span class="subst">$&#123;name&#125;</span> !`</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports.sayHello = sayHello</span><br><span class="line">exports.sayGoodbye = sayGoodbye</span><br></pre></td></tr></table></figure></p>
+<p>在需要使用这些模块的文件中，使用 require(path) 将公共代码引入</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> common = <span class="built_in">require</span>(<span class="string">'common.js'</span>)</span><br><span class="line">Page(&#123;</span><br><span class="line">  helloMINA: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    common.sayHello(<span class="string">'MINA'</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  goodbyeMINA: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    common.sayGoodbye(<span class="string">'MINA'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Tips</p>
+<ul>
+<li>tip: require 暂时不支持绝对路径</li>
+</ul>
+<h1 id="视图层-view"><a href="#视图层-View" class="headerlink" title="视图层 View"></a>视图层 View</h1><p>框架的视图层由 WXML 与 WXSS 编写，由组件来进行展示。</p>
+<p>将逻辑层的数据反应成视图，同时将视图层的事件发送给逻辑层。</p>
+<p>WXML(WeiXin Markup language) 用于描述页面的结构。</p>
+<p>WXS(WeiXin Script) 是小程序的一套脚本语言，结合 WXML，可以构建出页面的结构。</p>
+<p>WXSS(WeiXin Style Sheet) 用于描述页面的样式。</p>
+<p>组件(Component)是视图的基本组成单元。</p>
+<h2 id="wxs-模块"><a href="#WXS-模块" class="headerlink" title="WXS 模块"></a>WXS 模块</h2><p>WXS 代码可以编写在 wxml 文件中的     &lt;wxs&gt; 标签内，或以 .wxs 为后缀名的文件内。</p>
+<blockquote>
+<p>模块:<br>每一个 .wxs 文件和 &lt;wxs&gt; 标签都是一个单独的模块。<br>每个模块都有自己独立的作用域。即在一个模块里面定义的变量与函数，默认为私有的，对其他模块不可见。<br>一个模块要想对外暴露其内部的私有变量与函数，只能通过 module.exports 实现。</p>
+</blockquote>
+<blockquote>
+<p>注意:&lt;wxs&gt; 模块只能在定义模块的 WXML 文件中被访问到。使用     &lt;include&gt; 或     &lt;import&gt; 时，    &lt;wxs&gt; 模块不会被引入到对应的 WXML 文件中。    &lt;template&gt; 标签中，只能使用定义该     &lt;template&gt; 的 WXML 文件中定义的     &lt;wxs&gt; 模块。</p>
+</blockquote>
+<h1 id="自定义组件"><a href="#自定义组件" class="headerlink" title="自定义组件"></a>自定义组件</h1><p>类似于页面，一个自定义组件由 json wxml wxss js 4个文件组成。要编写一个自定义组件，首先需要在 json 文件中进行自定义组件声明（将 component 字段设为 true 可这一组文件设为自定义组件）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"component"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时，还要在 wxml 文件中编写组件模版，在 wxss 文件中加入组件样式，它们的写法与页面的写法类似。具体细节和注意事项参见 <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/wxml-wxss.html" target="_blank" rel="noopener">组件模版和样式</a> 。</p>
+<h1 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h1><p>插件的开发和使用自小程序基础库版本 1.9.6 开始支持。</p>
+<p>插件是对一组 js 接口、自定义组件或页面的封装，用于嵌入到小程序中使用。插件不能独立运行，必须嵌入在其他小程序中才能被用户使用；而第三方小程序在使用插件时，也无法看到插件的代码。因此，插件适合用来封装自己的功能或服务，提供给第三方小程序进行展示和使用。</p>
+<p>插件开发者可以像开发小程序一样编写一个插件并上传代码，在插件发布之后，其他小程序方可调用。小程序平台会托管插件代码，其他小程序调用时，上传的插件代码会随小程序一起下载运行。</p>
+<p>相对于普通 js 文件或自定义组件，插件拥有更强的独立性，拥有独立的 API 接口、域名列表等，但同时会受到一些限制，如一些 API 无法调用或功能受限。对于一些特殊的接口，如 wx.login 和 wx.requestPayment ，虽然插件不能直接调用，但可以使用 插件功能页 来间接实现。</p>
+<p>对于插件开发者，请阅读开发插件章节；对于插件使用者，请阅读使用<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/plugin/using.html" target="_blank" rel="noopener">插件章节</a>。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/MINA.html" target="_blank" rel="noopener">小程序开发-框架</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/08/微信小程序原理/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-移动端真机远程调试工具spy-debugger" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/08/移动端真机远程调试工具spy-debugger/">移动端真机远程调试工具spy-debugger</a>
+    </h1>
+  
+
+
+<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
+<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
+
+  <a href="javascript:;" class="archive-article-date">
+      <i class="icon-smile icon"></i> 阅读数:<span id="/2018/09/08/移动端真机远程调试工具spy-debugger/" class="pageViews">0</span>次
+  </a>
+
+        
+        <a href="/2018/09/08/移动端真机远程调试工具spy-debugger/" class="archive-article-date">
+  	<time datetime="2018-09-08T02:15:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#真机远程调试工具spy-debugger推荐">真机远程调试工具spy-debugger（推荐）</a></li>
+<li><a href="#特性">特性</a></li>
+<li><a href="#安装spy-debugger">安装spy-debugger</a></li>
+<li><a href="#启动spy-debugger">启动spy-debugger</a></li>
+<li><a href="#设置外部代理默认使用anyproxy">设置外部代理（默认使用AnyProxy）</a></li>
+<li><a href="#遇到的问题">遇到的问题</a><ul>
+<li><a href="#严格模式报错">严格模式报错</a></li>
+</ul>
+</li>
+<li><a href="#自定义选项">自定义选项</a><ul>
+<li><a href="#端口">端口</a></li>
+<li><a href="#设置外部代理默认使用anyproxy-1">设置外部代理（默认使用AnyProxy）</a></li>
+<li><a href="#是否允许weinre监控iframe加载的页面">是否允许weinre监控iframe加载的页面</a></li>
+<li><a href="#是否只拦截浏览器发起的https请求">是否只拦截浏览器发起的https请求</a></li>
+<li><a href="#是否允许http缓存">是否允许HTTP缓存</a></li>
+<li><a href="#more">more</a></li>
+</ul>
+</li>
+<li><a href="#参考文章">参考文章</a></li>
+</ul>
+<!-- tocstop -->
+<h1 id="真机远程调试工具spy-debugger推荐"><a href="#真机远程调试工具spy-debugger（推荐）" class="headerlink" title="真机远程调试工具spy-debugger（推荐）"></a>真机远程调试工具spy-debugger（推荐）</h1><p>十分方便的手机远程调试工具，集成weinre+AnyProxy+node-mitmproxy，支持HTTP/HTTPS，无需USB连接设备。一站式页面调试、抓包工具。远程调试任何手机浏览器页面，任何手机移动端webview（如：微信，HybirdApp等）。<br>spy-debugger 原理是集成了 weinre ，简化了 weinre 需要给每个调试的页面添加js代码。 spy-debugger 原理是拦截所有html页面请求注入 weinre 所需要的js代码。让页面调试更加方便。</p>
+<blockquote>
+<p>weinre : weinre 简单易用，但是需要每个调试页面添加相应的js代码，并且只能调试http页面，想调试https页面时需结合ngrok反向代理工具，这个工具虽然安装容易，但是使用并不是很方便（可能由于国内被墙，一直未能成功访问页面）</p>
+</blockquote>
+<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>1.h5页面调试+抓包</p>
+<p>2.操作简单</p>
+<p>3.支持https（单独使用weinre只能访问http） </p>
+<p>4.spy-debugger内部集成了weinre、node-mitmproxy、AnyProxy。</p>
+<p>5.自动忽略原生 App 发起的 https 请求，只拦截 webview 发起的 https 请求。对使用了 SSL pinning 技术的原生 App 不造成任何影响。</p>
+<p>6.可以配合其它代理工具一起使用(默认使用AnyProxy) (设置外部代理)</p>
+<h1 id="安装spy-debugger"><a href="#安装spy-debugger" class="headerlink" title="安装spy-debugger"></a>安装spy-debugger</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Windows 下</span><br><span class="line">npm install spy-<span class="keyword">debugger</span> -g</span><br><span class="line"></span><br><span class="line">Mac 下</span><br><span class="line">sudo npm install spy-<span class="keyword">debugger</span> -g</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/1.png" alt=""></p>
+<h1 id="启动spy-debugger"><a href="#启动spy-debugger" class="headerlink" title="启动spy-debugger"></a>启动spy-debugger</h1><p>spy-debugger -p 8888</p>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/2.png" alt=""></p>
+<p>启动成功后会浏览器会自动打开下面页面，则说明spy-debugeer初步完成</p>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/3.png" alt=""></p>
+<p>接下来，设置手机的HTTP代理，代理IP地址为PC的IP地址，端口为spy-debugger的启动端口(默认端口：9888)。</p>
+<p>Android设置代理步骤：设置 - WLAN - 长按选中网络 - 修改网络 - 高级 - 代理设置 - 手动<br>iOS设置代理步骤：设置 - 无线局域网 - 选中网络 - HTTP代理手动</p>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/4.jpg" alt=""></p>
+<p>手机安装证书注：手机必须先设置完代理后再通过(非微信)手机浏览器访问<a href="http://spydebugger.com/cert(地址二维码)安装证书（手机首次调试需要安装证书，已安装了证书的手机无需重复安装)。" target="_blank" rel="noopener">http://spydebugger.com/cert(地址二维码)安装证书（手机首次调试需要安装证书，已安装了证书的手机无需重复安装)。</a></p>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/2.png" alt=""></p>
+<blockquote>
+<p>有时会出现设置代理之后所有页面都不能访问，证书也安装不上，此时只要将电脑的防火墙关闭就好了。(问题 ： <a href="https://github.com/wuchangming/spy-debugger/issues/12" target="_blank" rel="noopener">https://github.com/wuchangming/spy-debugger/issues/12</a> )</p>
+</blockquote>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/5.png" alt=""></p>
+<p>安装成功后，就可以手机访问h5页面啦，浏览器也可以很方便的审查元素和转包</p>
+<p>审查元素</p>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/6.jpg" alt=""></p>
+<p>修改元素属性<br> <img src="/2018/09/08/移动端真机远程调试工具spy-debugger/7.jpg" alt=""></p>
+<p> 抓包</p>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/8.jpg" alt=""></p>
+<h1 id="设置外部代理默认使用anyproxy"><a href="#设置外部代理（默认使用AnyProxy）" class="headerlink" title="设置外部代理（默认使用AnyProxy）"></a>设置外部代理（默认使用AnyProxy）</h1><p>通常我们使用fiddler抓包工具，并且需要切换各种环境，所以自己设置外部代理就比较方便。</p>
+<p>spy-debugger内置AnyProxy提供抓包功能，但是也可通过设置外部代理和其它抓包代理工具一起使用，如：Charles、Fiddler。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spy-<span class="keyword">debugger</span> -e http:<span class="comment">//127.0.0.1:8888</span></span><br></pre></td></tr></table></figure>
+<p>需要注意的是手机设置代理的端口为node-mitmproxy启动端口号。</p>
+<p><img src="/2018/09/08/移动端真机远程调试工具spy-debugger/9.png" alt=""></p>
+<p>这样就方便调试各个环境的页面了。</p>
+<p> <img src="/2018/09/08/移动端真机远程调试工具spy-debugger/10.png" alt=""></p>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><h2 id="严格模式报错"><a href="#严格模式报错" class="headerlink" title="严格模式报错"></a>严格模式报错</h2><p>解决方法：<br>1.npm install strict-mode<br>2.’use strict’;</p>
+<p>  在报错的文件头部加一个’use strict’就ok了。</p>
+<h1 id="自定义选项"><a href="#自定义选项" class="headerlink" title="自定义选项"></a>自定义选项</h1><h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2><p>(默认端口：9888)</p>
+<p>spy-debugger -p 8888</p>
+<h2 id="设置外部代理默认使用anyproxy"><a href="#设置外部代理（默认使用AnyProxy）-1" class="headerlink" title="设置外部代理（默认使用AnyProxy）"></a>设置外部代理（默认使用AnyProxy）</h2><p>spy-debugger -e <a href="http://127.0.0.1:8888" target="_blank" rel="noopener">http://127.0.0.1:8888</a><br>spy-debugger内置AnyProxy提供抓包功能，但是也可通过设置外部代理和其它抓包代理工具一起使用，如：Charles、Fiddler。</p>
+<p><strong>设置页面内容为可编辑模式 </strong></p>
+<p>该功能使页面内容修改更加直观方便。 (默认： false)</p>
+<p>spy-debugger -w true<br>内部实现原理：在需要调试的页面内注入代码：document.body.contentEditable=true。暂不支持使用了iscroll框架的页面。</p>
+<h2 id="是否允许weinre监控iframe加载的页面"><a href="#是否允许weinre监控iframe加载的页面" class="headerlink" title="是否允许weinre监控iframe加载的页面"></a>是否允许weinre监控iframe加载的页面</h2><p>(默认： false)</p>
+<p>spy-debugger -i true</p>
+<h2 id="是否只拦截浏览器发起的https请求"><a href="#是否只拦截浏览器发起的https请求" class="headerlink" title="是否只拦截浏览器发起的https请求"></a>是否只拦截浏览器发起的https请求</h2><p>(默认： true)</p>
+<p>spy-debugger -b false<br>有些浏览器发出的connect请求没有正确的携带userAgent，这个判断有时候会出错，如UC浏览器。这个时候需要设置为false。大多数情况建议启用默认配置：true，由于目前大量App应用自身（非WebView）发出的请求会使用到SSL pinning技术，自定义的证书将不能通过app的证书校验。</p>
+<h2 id="是否允许http缓存"><a href="#是否允许HTTP缓存" class="headerlink" title="是否允许HTTP缓存"></a>是否允许HTTP缓存</h2><p>(默认： false)</p>
+<p>spy-debugger -c true</p>
+<h2 id="more"><a href="#more" class="headerlink" title="more"></a>more</h2><p>修复weinre在node.js V7版本会崩溃的bug<br>对weinre在页面document ready事件前，无法打印console.log日志进行了增强修复。<br>增强weinre打印未捕获异常(Uncaught Exceptions)功能。<br>spy-debugger原理是集成了weinre，简化了weinre需要给每个调试的页面添加js代码。spy-debugger原理是拦截所有html页面请求注入weinre所需要的js代码。让页面调试更加方便。</p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
+<li><a href="https://cnodejs.org/topic/56ebdf2db705742136388f71" target="_blank" rel="noopener">真机远程页面调试工具spy-debugger 3.x：集成weinre+AnyProxy，页面调试+抓包。调试生产HTTPS页面。</a></li>
+</ul>
+<ul>
+<li><p><a href="https://github.com/wuchangming/spy-debugger" target="_blank" rel="noopener">spy-debugger</a></p>
+</li>
+<li><p><a href="http://www.voidcn.com/blog/WHACKW/article/p-6252763.html" target="_blank" rel="noopener">分享：真机页面调试＋抓包，调试微信生产环境 HTTPS 页面工具集成。(weinre + AnyProxy)</a></p>
+</li>
+<li><p>严格模式问题</p>
+<p><a href="https://www.npmjs.com/package/strict-mode" target="_blank" rel="noopener">https://www.npmjs.com/package/strict-mode</a></p>
+<p><a href="http://blog.fengxiaotx.com/archives/303" target="_blank" rel="noopener">http://blog.fengxiaotx.com/archives/303</a></p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/08/移动端真机远程调试工具spy-debugger/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hexo主题yilia自定义添加valine评论系统" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -238,7 +770,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
         		</li>
       		
 		</ul>
@@ -1135,6 +1667,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
               <li class="article-tag-list-item">
