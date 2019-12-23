@@ -139,6 +139,125 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Javascript中的this" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/23/Javascript中的this/">Javascript中的this</a>
+    </h1>
+  
+
+
+<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
+<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
+
+  <a href="javascript:;" class="archive-article-date">
+      <i class="icon-smile icon"></i> 阅读数:<span id="/2019/12/23/Javascript中的this/" class="pageViews">0</span>次
+  </a>
+
+        
+        <a href="/2019/12/23/Javascript中的this/" class="archive-article-date">
+  	<time datetime="2019-12-23T07:22:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#作为对象方法调用">作为对象方法调用</a></li>
+<li><a href="#作为构造函数调用">作为构造函数调用</a></li>
+<li><a href="#使用-apply-或-callbind-调用">使用 apply 或 call,bind 调用</a></li>
+<li><a href="#不同环境this的取值">不同环境this的取值</a><ul>
+<li><a href="#全局作用域中this浏览器">全局作用域中this(浏览器)</a></li>
+<li><a href="#对象原型链上的this">对象原型链上的this</a></li>
+<li><a href="#getset方法与this">get/set方法与this</a></li>
+</ul>
+</li>
+<li><a href="#参考资料">参考资料：</a></li>
+</ul>
+<!-- tocstop -->
+<blockquote>
+<p>This指代函数当前的运行环境。</p>
+</blockquote>
+<p>JavaScript 中的 this，它可以是全局对象、当前对象或者任意对象，这完全取决于函数的调用方式。JavaScript 中函数的调用有以下几种方式：</p>
+<p>1.作为对象方法调用</p>
+<p>2.作为函数直接调用</p>
+<p>3.作为构造函数调用</p>
+<p>4.使用 apply 或 call,bind 调用</p>
+<p>我们将按照调用方式的不同，分别讨论 this 的含义。</p>
+<h1 id="作为对象方法调用"><a href="#作为对象方法调用" class="headerlink" title="作为对象方法调用"></a>作为对象方法调用</h1><p>在 JavaScript 中，函数也是对象，因此函数可以作为一个对象的属性，此时该函数被称为该对象的方法，在使用这种调用方式时，this 被自然绑定到该对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> test = &#123;     </span><br><span class="line">    a:<span class="number">0</span>,     </span><br><span class="line">    b:<span class="number">0</span>,</span><br><span class="line">    get:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.a;     </span><br><span class="line">     &#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(test.get()) <span class="comment">//0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> prop=<span class="number">30</span></span><br><span class="line"><span class="keyword">var</span> O=&#123;<span class="attr">prop</span>:<span class="number">37</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">independent</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">this</span>.prop</span><br><span class="line">&#125;</span><br><span class="line">O.f=independent</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(O.f()) <span class="comment">//37  作为对象方法调用</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(independent()) <span class="comment">//30  作为函数直接调用</span></span><br></pre></td></tr></table></figure>
+<p>由此可见this是动态作用域，this的指向关键是看函数怎么调用而不是怎么创建。</p>
+<p>作为函数直接调用<br>函数也可以直接被调用，此时 this 绑定到全局对象（在严格模式下为undefined）。在浏览器中，window 就是该全局对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn1</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">　　<span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(fn1())  <span class="comment">//window</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="meta">    "use strict"</span>;<span class="comment">//see strict mode</span></span><br><span class="line">　　<span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(fn2 ())  <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+<h1 id="作为构造函数调用"><a href="#作为构造函数调用" class="headerlink" title="作为构造函数调用"></a>作为构造函数调用</h1><p>当函数作为构造函数调用时,this代表new出来的对象，并且对象的原型会指向构造器的prototype(构造器是Foo、foo.constructor=Foo )<br>如果没有使用new而是直接调用函数,this===window;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span> (<span class="params">name</span>)</span>&#123;</span><br><span class="line">　　<span class="keyword">this</span>.name = name ;</span><br><span class="line">　　<span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> foo = <span class="keyword">new</span> Foo(<span class="string">'Emma'</span>);  <span class="comment">//Foo &#123;name: "Emma"&#125; </span></span><br><span class="line">Foo() <span class="comment">//window</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用-apply-或-callbind-调用"><a href="#使用-apply-或-call-bind-调用" class="headerlink" title="使用 apply 或 call,bind 调用"></a>使用 apply 或 call,bind 调用</h1><p>apply 和 call允许切换函数执行的上下文环境（context），即 this 绑定的对象。this取得的是apply() 、call()、 bind()调用时传入的第一个参数（bind是ES5提供的方法，所以只有IE9及以上才支持）</p>
+<p>apply()、call()</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">c,d</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.a + <span class="keyword">this</span>.b +c + d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> O = &#123;<span class="attr">a</span>:<span class="number">1</span>,<span class="attr">b</span>:<span class="number">3</span>&#125;</span><br><span class="line"> </span><br><span class="line">add.call(O,<span class="number">5</span>,<span class="number">7</span>); <span class="comment">//1+3+5+7</span></span><br><span class="line"></span><br><span class="line">add.apply(O,[<span class="number">10</span>,<span class="number">20</span>]) <span class="comment">//1+3+10+20</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(<span class="keyword">this</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bar.call(<span class="number">7</span>) <span class="comment">// "[object Number]"</span></span><br><span class="line"></span><br><span class="line">bind()改变<span class="keyword">this</span>取值</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> g = f.bind(&#123;<span class="attr">a</span>:<span class="string">"test"</span>&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(g()); <span class="comment">//test</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> O = &#123;<span class="attr">a</span>:<span class="number">37</span>,<span class="attr">f</span>:f,<span class="attr">g</span>:g&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(O.f(),O.g()) <span class="comment">//37,test</span></span><br><span class="line"></span><br><span class="line">bind与<span class="keyword">new</span>（用<span class="keyword">new</span>调用bind改变不了<span class="keyword">this</span>取值）</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.b=<span class="number">100</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.a</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> func = foo.bind(&#123;<span class="attr">a</span>:<span class="number">1</span>&#125;)</span><br><span class="line">func(); <span class="comment">//1</span></span><br><span class="line"><span class="keyword">new</span> func(); <span class="comment">//&#123;b:100&#125;</span></span><br></pre></td></tr></table></figure>
+<p>直接调用func()，this会指向bind中的参数，所以返回值为1，由于执行this.b=100,所以this对象会有个b属性，最终this为{a: 1, b: 100}。用new的话return如果不是对象会把this作为返回值，并且this会被初始化为一个默认的空对象，对象的原型是构造器的prototype，所以这里虽然用了bind的方法，但是this仍然会指向没有bind的情况。this指向空对象，空对象的原型指向foo.prototype，空对象的b属性会设置为100，整个对象会作用返回值(return this.a 被忽视）所以结果为{b:100}.</p>
+<p>bind与currying(函数柯里化：把一个函数拆成多个单元）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a,b,c</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a + b + c</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> func = add.bind(<span class="literal">undefined</span>,<span class="number">100</span>);</span><br><span class="line">func(<span class="number">1</span>,<span class="number">2</span>) <span class="comment">//103 (100 + 1 +2)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> func2 = func.bind(<span class="literal">undefined</span>,<span class="number">200</span>);</span><br><span class="line">func2(<span class="number">10</span>) <span class="comment">//310 (100+ 200 + 10)</span></span><br></pre></td></tr></table></figure>
+<p>有时候不需要一次性把函数都调用完，而是调用一次把前几个参数传完了以后得到了一个函数再去调用，并且每次都传入自己所需要传入的值。</p>
+<p>add.bind不需要改变this，那么就传入undefined（null也可），但是我们提供了额外参数100，那么bind方法就会把100赋值给a,再调用的时候1会给b，2就会给c，所以最后答案是103。再func.bind一次a上次绑定了100，b就会绑定为200，再调用func2传入值为10,10赋值为c,所以func2调用结果为310。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getConfig</span>(<span class="params">color,size,otherOptions</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(color,size,otherOptions)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> defaultConfig=getConfig.bind(<span class="literal">null</span>,<span class="string">"#cc0000"</span>,<span class="string">"1024*768"</span>);</span><br><span class="line"></span><br><span class="line">defaultConfig(<span class="string">"123"</span>) <span class="comment">//#cc0000","1024*768,123</span></span><br><span class="line">defaultConfig(<span class="string">"456"</span>) <span class="comment">//#cc0000","1024*768,456</span></span><br></pre></td></tr></table></figure>
+<h1 id="不同环境this的取值"><a href="#不同环境this的取值" class="headerlink" title="不同环境this的取值"></a>不同环境this的取值</h1><h2 id="全局作用域中this浏览器"><a href="#全局作用域中this-浏览器" class="headerlink" title="全局作用域中this(浏览器)"></a>全局作用域中this(浏览器)</h2><p>全局作用域中的this一般指向全局对象，在浏览器中全局对象就是window</p>
+<p>console.log(window.document===document) //true<br>console.log(this===window) //true<br>this.a=37<br>console.log(window.a) //37</p>
+<h2 id="对象原型链上的this"><a href="#对象原型链上的this" class="headerlink" title="对象原型链上的this"></a>对象原型链上的this</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123; <span class="attr">f</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="keyword">this</span>.a + <span class="keyword">this</span>.b &#125; &#125;</span><br><span class="line"><span class="keyword">var</span> p=<span class="built_in">Object</span>.create(o)</span><br><span class="line">p.a=<span class="number">1</span></span><br><span class="line">p.b=<span class="number">4</span></span><br><span class="line"><span class="built_in">console</span>.log(p.f()) <span class="comment">//5</span></span><br></pre></td></tr></table></figure>
+<p>p是空对象并且它的原型会指向o(p.<strong>proto</strong>===o)，调用原型上的方法（对象本身没有此方法会沿着原型链向上查找，原型链上的this也可以指向Object.create创建的对象，此this的指向与new创建实例对象的指向类似）this.a和this.b仍然能取到对象p上的a和b。即原型链上的this可以指向所在的对象（p对象）</p>
+<p>注：p的构造器不为o，为Object（p.constructor===Object），这是用Object.create创建对象与new实例创建对象的不同,如果是new创建的实例对象构造器就是o。</p>
+<h2 id="getset方法与this"><a href="#get-set方法与this" class="headerlink" title="get/set方法与this"></a>get/set方法与this</h2><p>此时this的指向与原型链上的this的指向类似</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">modules</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.sqrt(<span class="keyword">this</span>.re*<span class="keyword">this</span>.re + <span class="keyword">this</span>.im*<span class="keyword">this</span>.im)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">    re:<span class="number">1</span>,</span><br><span class="line">    im:<span class="number">-1</span>,</span><br><span class="line">    get phase()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.atan2(<span class="keyword">this</span>.im,<span class="keyword">this</span>.re)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o,<span class="string">"modules"</span>,&#123;</span><br><span class="line">    get:modules,<span class="attr">enumerable</span>:<span class="literal">true</span>,<span class="attr">configurable</span>:<span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(o.phase,o.modules) <span class="comment">//logs -0.781.4142</span></span><br></pre></td></tr></table></figure>
+<p>get、set方法中的this，一般情况下也是会指向get，set方法所在的对象（与一般对象属性作为函数对象类似）。</p>
+<h1 id="参考资料"><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><p>JavaScript 的 this 原理</p>
+<p><a href="http://www.ruanyifeng.com/blog/2018/06/javascript-this.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2018/06/javascript-this.html</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/23/Javascript中的this/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ES6-常用语法整理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1852,85 +1971,10 @@
 
 
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/28/hello-world/">Hello World</a>
-    </h1>
-  
-
-
-<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
-<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
-
-  <a href="javascript:;" class="archive-article-date">
-      <i class="icon-smile icon"></i> 阅读数:<span id="/2018/08/28/hello-world/" class="pageViews">0</span>次
-  </a>
-
-        
-        <a href="/2018/08/28/hello-world/" class="archive-article-date">
-  	<time datetime="2018-08-28T12:12:44.993Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="quick-start-1"><a href="#Quick-Start-1" class="headerlink" title="Quick Start 1"></a>Quick Start 1</h2><h3 id="create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/08/28/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
   
 
 
