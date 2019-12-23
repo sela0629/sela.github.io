@@ -6,16 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://sela0629.github.io">
-  <title>Archives: 2019 | Sela乐园</title>
+  <title>micro-Templating源码解析 | Sela乐园</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="sela; 前端">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Sela乐园">
-<meta property="og:url" content="https://sela0629.github.io/archives/2019/index.html">
+  <meta name="description" content="formatJson是legos开发模式下很常用的js模板引擎。它其实是jQuery的创始人John Resig 2008年写的Micro-Templating。虽然代码有些旧了，但是其中的思想还是值得借鉴的。  123456789101112131415161718192021222324252627282930313233343536define(&quot;formatJson&quot;, functi">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="micro-Templating源码解析">
+<meta property="og:url" content="https://sela0629.github.io/2019/12/23/micro-Templating源码解析/index.html">
 <meta property="og:site_name" content="Sela乐园">
+<meta property="og:description" content="formatJson是legos开发模式下很常用的js模板引擎。它其实是jQuery的创始人John Resig 2008年写的Micro-Templating。虽然代码有些旧了，但是其中的思想还是值得借鉴的。  123456789101112131415161718192021222324252627282930313233343536define(&quot;formatJson&quot;, functi">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-12-23T08:39:11.189Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sela乐园">
+<meta name="twitter:title" content="micro-Templating源码解析">
+<meta name="twitter:description" content="formatJson是legos开发模式下很常用的js模板引擎。它其实是jQuery的创始人John Resig 2008年写的Micro-Templating。虽然代码有些旧了，但是其中的思想还是值得借鉴的。  123456789101112131415161718192021222324252627282930313233343536define(&quot;formatJson&quot;, functi">
   
     <link rel="alternative" href="/atom.xml" title="Sela乐园" type="application/atom+xml">
   
@@ -137,31 +141,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-micro-Templating源码解析" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/23/micro-Templating源码解析/" class="archive-article-date">
-  	<time datetime="2019-12-23T08:31:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/23/micro-Templating源码解析/">micro-Templating源码解析</a>
+    <h1 class="article-title" itemprop="name">
+      micro-Templating源码解析
     </h1>
   
 
@@ -173,8 +160,94 @@
       <i class="icon-smile icon"></i> 阅读数:<span id="/2019/12/23/micro-Templating源码解析/" class="pageViews">0</span>次
   </a>
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/12/23/micro-Templating源码解析/" class="archive-article-date">
+  	<time datetime="2019-12-23T08:31:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<!-- tocstop -->
+<blockquote>
+<p>formatJson是legos开发模式下很常用的js模板引擎。它其实是jQuery的创始人John Resig 2008年写的Micro-Templating。虽然代码有些旧了，但是其中的思想还是值得借鉴的。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="string">"formatJson"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">require, exports, module</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _formatJson_cache = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  $formatJson = <span class="function"><span class="keyword">function</span>(<span class="params">str, data</span>) </span>&#123;</span><br><span class="line">    <span class="comment">/* 模板替换,str:模板id或者内容，data:数据内容</span></span><br><span class="line"><span class="comment">			\W：匹配任何非单词字符。等价于 '[^A-Za-z0-9_]'。</span></span><br><span class="line"><span class="comment">			如果是id,并且cache中有值，直接返回，否则获取innerHTML，再次解析；</span></span><br><span class="line"><span class="comment">			如果不是id，解析并存入cache</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">    <span class="keyword">var</span> fn = !<span class="regexp">/\W/</span>.test(str)</span><br><span class="line">      ? (_formatJson_cache[str] =</span><br><span class="line">          _formatJson_cache[str] ||</span><br><span class="line">          $formatJson(<span class="built_in">document</span>.getElementById(str).innerHTML))</span><br><span class="line">      : <span class="keyword">new</span> <span class="built_in">Function</span>(</span><br><span class="line">          <span class="string">"obj"</span>,</span><br><span class="line">          <span class="string">"var p=[],print=function()&#123;p.push.apply(p,arguments);&#125;;"</span> +</span><br><span class="line">            <span class="string">"with(obj)&#123;p.push('"</span> +</span><br><span class="line">            str</span><br><span class="line">              .replace(<span class="regexp">/[\r\t\n]/g</span>, <span class="string">" "</span>)</span><br><span class="line">              .split(<span class="string">"&lt;%"</span>)</span><br><span class="line">              .join(<span class="string">"\t"</span>)</span><br><span class="line">              .replace(<span class="regexp">/((^|%&gt;)[^\t]*)'/g</span>, <span class="string">"$1\r"</span>)</span><br><span class="line">              .replace(<span class="regexp">/\t=(.*?)%&gt;/g</span>, <span class="string">"',$1,'"</span>)</span><br><span class="line">              .split(<span class="string">"\t"</span>)</span><br><span class="line">              .join(<span class="string">"');"</span>)</span><br><span class="line">              .split(<span class="string">"%&gt;"</span>)</span><br><span class="line">              .join(<span class="string">"p.push('"</span>)</span><br><span class="line">              .split(<span class="string">"\r"</span>)</span><br><span class="line">              .join(<span class="string">"\\'"</span>) +</span><br><span class="line">            <span class="string">"');&#125;return p.join('');"</span></span><br><span class="line">        );</span><br><span class="line">    <span class="keyword">return</span> data ? fn(data) : fn;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  exports.render = $formatJson;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>稍稍整理下，将字符替换部分提出来·</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="string">"formatJson"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">require, exports, module</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _formatJson_cache = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  $formatJson = <span class="function"><span class="keyword">function</span>(<span class="params">str, data</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// \W	匹配非字母、数字、下划线。等价于 '[^A-Za-z0-9_]'。</span></span><br><span class="line">    <span class="keyword">var</span> fn = !<span class="regexp">/\W/</span>.test(str)</span><br><span class="line">      ? <span class="comment">// 只有模板才有非字母数字字符，用来判断传入的是模板id还是模板字符串，</span></span><br><span class="line">        <span class="comment">// 如果是id的话，判断是否有缓存，没有缓存的话调用$formatJson</span></span><br><span class="line">        <span class="comment">// 如果是模板的话，就调用new Function()解析编译</span></span><br><span class="line">        (_formatJson_cache[str] =</span><br><span class="line">          _formatJson_cache[str] ||</span><br><span class="line">          $formatJson(<span class="built_in">document</span>.getElementById(str).innerHTML))</span><br><span class="line">      : <span class="keyword">new</span> <span class="built_in">Function</span>(</span><br><span class="line">          <span class="string">"obj"</span>, <span class="comment">// 解析成html</span></span><br><span class="line">          <span class="string">"var p=[],print=function()&#123;p.push.apply(p,arguments);&#125;;"</span> +</span><br><span class="line">            <span class="comment">// 使用with将数据作为局部变量引入</span></span><br><span class="line">            <span class="string">"with(obj)&#123;p.push('"</span> +</span><br><span class="line">            getStr(str) +</span><br><span class="line">            <span class="string">"');&#125;return p.join('');"</span></span><br><span class="line">        );</span><br><span class="line">    <span class="keyword">return</span> data ? fn(data) : fn;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 将模板转换为纯JavaScript</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getStr</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 1.删除回车，制表，换行</span></span><br><span class="line">    str = str.replace(<span class="regexp">/[\r\t\n]/g</span>, <span class="string">" "</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.替换 &lt;% 为 \t制表符，两种情况（赋值和js代码）</span></span><br><span class="line">    <span class="comment">// 赋值： 例如 &lt;div id="&lt;%=id%&gt;"&gt;  ==&gt;  &lt;div id="\t=id%&gt;"&gt;</span></span><br><span class="line">    <span class="comment">// js代码：例如 &lt;% for ( var i = 0; i &lt; items.length; i++ ) &#123; %&gt;  ==&gt;  \t for ( var i = 0; i &lt; items.length; i++ ) &#123; %&gt;</span></span><br><span class="line">    str = str.split(<span class="string">"&lt;%"</span>).join(<span class="string">"\t"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3.替换'为\r ，最后一步会重新替换回来</span></span><br><span class="line">    <span class="comment">// 节点属性操作赋值使用单引号，如果不替换 ,''&gt;' 是会报错的</span></span><br><span class="line">    <span class="comment">// &lt;div style='background:&lt;%=color%&gt;'&gt;&lt;%=id%&gt;&lt;/div&gt;   ==&gt; p.push(' &lt;div style='background:',color,''&gt;',id,'&lt;/div&gt;        ');</span></span><br><span class="line">    str = str.replace(<span class="regexp">/((^|%&gt;)[^\t]*)'/g</span>, <span class="string">"$1\r"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4.赋值解析：赋值后部分，拆分为三项，结合with，id就会成为实际的值，然后一直被push  &lt;div id="\t=id%&gt;"&gt; ==&gt;    &lt;div id=" ,id, "&gt;</span></span><br><span class="line">    <span class="comment">// 这里会消费掉 &lt;%=xxx%&gt;，</span></span><br><span class="line">    <span class="comment">// 那么剩下的 %&gt;必然是js语句结尾的, \t必然是js语句的开头</span></span><br><span class="line">    str = str.replace(<span class="regexp">/\t=(.*?)%&gt;/g</span>, <span class="string">"',$1,'"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5.js语句开始符号替换： 经过上一步后，还剩余的\t，是js语句的，这里就用 ');来结束 ，js语句会单开p.push,</span></span><br><span class="line">    str = str.split(<span class="string">"\t"</span>).join(<span class="string">"');"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 6.js语句结尾符号替换： %&gt; 替换为 p.push, 这里把js语句内生成的字符串或者变量再push一次</span></span><br><span class="line">    str = str.split(<span class="string">"%&gt;"</span>).join(<span class="string">"p.push('"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 7.替换回车为\' ， 恢复str.replace(/((^|%&gt;)[^\t]*)'/g, "$1\r") 去掉的'</span></span><br><span class="line">    str = str.split(<span class="string">"\r"</span>).join(<span class="string">"\\'"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  exports.render = $formatJson;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>模板的语法很简单，有三条基本规则</p>
+<p>1.用正常的方式书写html</p>
+<p>2.用&lt;% %&gt;嵌套JavaScript语句</p>
+<p>3.用&lt;%= %&gt;嵌套JavaScript 变量值</p>
+<p>应用举例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tpl模板</span></span><br><span class="line">&lt;% <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++ ) &#123; %&gt;</span><br><span class="line">        &lt;% <span class="keyword">if</span>( i%<span class="number">2</span> == <span class="number">0</span>) &#123;%&gt;</span><br><span class="line">            &lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">%=items[i].id%</span>&gt;</span>:<span class="tag">&lt;<span class="name">%=items[i].name%</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">        &lt;% &#125; %&gt;</span><br><span class="line">    &lt;% &#125; %&gt;</span><br><span class="line">    &lt;% print(<span class="string">'数组长度'</span> + items.length ); %&gt;</span><br><span class="line">    &lt;div style=<span class="string">'background:&lt;%=color%&gt;'</span>&gt;<span class="xml"><span class="tag">&lt;<span class="name">%=id%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// data数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data=&#123;</span><br><span class="line">  id: <span class="string">'158015777'</span>,</span><br><span class="line">  i: <span class="number">10</span>,</span><br><span class="line">  profile_image_url: <span class="string">''</span>,</span><br><span class="line">  from_user: <span class="string">'Tom cCom'</span>,</span><br><span class="line">  text: <span class="string">'啊哈哈'</span>,</span><br><span class="line">  color: <span class="string">'red'</span>,</span><br><span class="line">  items: [</span><br><span class="line">    &#123;</span><br><span class="line">      id: <span class="number">1</span>,</span><br><span class="line">      name: <span class="string">'Order1'</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      id: <span class="number">2</span>,</span><br><span class="line">      name: <span class="string">'Order2'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      id: <span class="number">3</span>,</span><br><span class="line">      name: <span class="string">'Order2'</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 通过模板和data解析的html</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>1:Order1<span class="tag">&lt;/<span class="name">li</span>&gt;</span>                                                                                    <span class="tag">&lt;<span class="name">li</span>&gt;</span>3:Order2<span class="tag">&lt;/<span class="name">li</span>&gt;</span>                                数组长度3         <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"background:red"</span>&gt;</span>158015777<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 经过 getStr 处理后</span></span><br><span class="line"></span><br><span class="line"><span class="string">'); for ( var i = 0; i &lt; items.length; i++ ) &#123; p.push('</span></span><br><span class="line">        <span class="string">'); if( i%2 == 0) &#123;p.push('</span></span><br><span class="line">            &lt;li&gt;<span class="string">',items[i].id,'</span>:<span class="string">',items[i].name,'</span>&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">        '); &#125; p.push('</span></span><br><span class="line"><span class="regexp">    '); &#125; p.push('</span></span><br><span class="line"><span class="regexp">    '); print('数组长度' + items.length ); p.push('</span></span><br><span class="line"><span class="regexp">    &lt;div style=\'background:',color,'\'&gt;',id,'&lt;/</span>div&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*加上头尾</span></span><br><span class="line"><span class="comment"> "var p=[],print=function()&#123;p.push.apply(p,arguments);&#125;;" +</span></span><br><span class="line"><span class="comment">            // 使用with将数据作为局部变量引入</span></span><br><span class="line"><span class="comment">            "with(obj)&#123;p.push('" +</span></span><br><span class="line"><span class="comment">            getStr(str) +</span></span><br><span class="line"><span class="comment">            "');&#125;return p.join('');"</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = [],</span><br><span class="line">  print = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// arguments 是一个对应于传递给函数的参数的类数组对象。</span></span><br><span class="line">    p.push.apply(p, <span class="built_in">arguments</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"><span class="keyword">with</span> (obj) &#123;</span><br><span class="line">  p.push(<span class="string">""</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++) &#123;</span><br><span class="line">    p.push(<span class="string">""</span>);</span><br><span class="line">    <span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">      p.push(<span class="string">"&lt;li&gt;"</span>, items[i].id, <span class="string">":"</span>, items[i].name, <span class="string">"&lt;/li&gt;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    p.push(<span class="string">""</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  p.push(<span class="string">""</span>);</span><br><span class="line">  print(<span class="string">"数组长度"</span> + items.length);</span><br><span class="line">  p.push(<span class="string">"&lt;div style='background:"</span>, color, <span class="string">"'&gt;"</span>, id, <span class="string">"&lt;/div&gt;"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> p.join(<span class="string">""</span>);</span><br></pre></td></tr></table></figure>
+<p>步骤分解解释：</p>
+<p>第一步: replace(/[\r\t\n]/g, “ “)<br>去掉回车，换行，制表<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++ ) &#123; %&gt;                 </span><br><span class="line">    &lt;% <span class="keyword">if</span>( i%<span class="number">2</span> == <span class="number">0</span>) &#123;%&gt;                 </span><br><span class="line">        &lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">%=items[i].id%</span>&gt;</span>:<span class="tag">&lt;<span class="name">%=items[i].name%</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span>             </span><br><span class="line">    &lt;% &#125; %&gt;          </span><br><span class="line">&lt;% &#125; %&gt;         </span><br><span class="line">&lt;% print(<span class="string">'数组长度'</span> + items.length ); %&gt;         </span><br><span class="line">&lt;div style=<span class="string">'background:&lt;%=color%&gt;'</span>&gt;<span class="xml"><span class="tag">&lt;<span class="name">%=id%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>第二步: split(“&lt;%”).join(“\t”)<br>&lt;%替换为\t</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\t <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++ ) &#123; %&gt;                 </span><br><span class="line">    \t <span class="keyword">if</span>( i%<span class="number">2</span> == <span class="number">0</span>) &#123;%&gt;                 </span><br><span class="line">        &lt;li&gt;\t=items[i].id%&gt;:\t=items[i].name%&gt;<span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span>             </span><br><span class="line">    \t &#125; %&gt;          </span><br><span class="line">\t &#125; %&gt;         </span><br><span class="line">\t print(<span class="string">'数组长度'</span> + items.length ); %&gt;         </span><br><span class="line">&lt;div style=<span class="string">'background:\t=color%&gt;'</span>&gt;\t=id%&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>第三步: replace(/((^|%&gt;)[^\t]*)’/g, “$1\r”)<br>替换需要保留的’为\r, 主要是节点属性操作</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\t <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++ ) &#123; %&gt;                 </span><br><span class="line">    \t <span class="keyword">if</span>( i%<span class="number">2</span> == <span class="number">0</span>) &#123;%&gt;                 </span><br><span class="line">        &lt;li&gt;\t=items[i].id%&gt;:\t=items[i].name%&gt;<span class="xml"><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span>             </span><br><span class="line">    \t &#125; %&gt;          </span><br><span class="line">\t &#125; %&gt;         </span><br><span class="line">\t print(<span class="string">'数组长度'</span> + items.length ); %&gt;         </span><br><span class="line">&lt;div style=\rbackground:\t=color%&gt;\r&gt;\t=id%&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>第四步: replace(/\t=(.*?)%&gt;/g, “‘,$1,’”)<br>赋值部分替换，’,$1,’,实际是把赋值部分独立出来，那么push到这里的时候，就会进行运算</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\t <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++ ) &#123; %&gt;                 </span><br><span class="line">    \t <span class="keyword">if</span>( i%<span class="number">2</span> == <span class="number">0</span>) &#123;%&gt;                 </span><br><span class="line">    &lt;li&gt;<span class="string">',items[i].id,'</span>:<span class="string">',items[i].name,'</span>&lt;<span class="regexp">/li&gt;             </span></span><br><span class="line"><span class="regexp">    \t &#125; %&gt;          </span></span><br><span class="line"><span class="regexp">\t &#125; %&gt;         </span></span><br><span class="line"><span class="regexp">\t print('数组长度' + items.length ); %&gt;         </span></span><br><span class="line"><span class="regexp">&lt;div style=\rbackground:',color,'\r&gt;',id,'&lt;/</span>div&gt;</span><br></pre></td></tr></table></figure>
+<p>第五步: split(“\t”).join(“‘);”)<br>剩下的\t，代表了js语句开始部分， js语句\t替换为’); ，正是push的结束部分，正好完成push语句</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'); for ( var i = 0; i &lt; items.length; i++ ) &#123; %&gt;                 </span></span><br><span class="line"><span class="string">    '</span>); <span class="keyword">if</span>( i%<span class="number">2</span> == <span class="number">0</span>) &#123;%&gt;                 </span><br><span class="line">        &lt;li&gt;<span class="string">',items[i].id,'</span>:<span class="string">',items[i].name,'</span>&lt;<span class="regexp">/li&gt;              </span></span><br><span class="line"><span class="regexp">    ');&#125; %&gt;          </span></span><br><span class="line"><span class="regexp">'); &#125; %&gt;         </span></span><br><span class="line"><span class="regexp">'); print('数组长度' + items.length ); %&gt;         </span></span><br><span class="line"><span class="regexp">&lt;div style=\rbackground:',color,'\r&gt;',id,'&lt;/</span>div&gt;</span><br></pre></td></tr></table></figure>
+<p>第六步: split(“%&gt;”).join(“p.push(‘“);<br>剩下的%&gt;体表了js语句的结束，替换为p.push(‘“，开启新的环节</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'); for ( var i = 0; i &lt; items.length; i++ ) &#123; p.push('</span>                 </span><br><span class="line">    <span class="string">'); if( i%2 == 0) &#123;p.push('</span>                 </span><br><span class="line">        &lt;li&gt;<span class="string">',items[i].id,'</span>:<span class="string">',items[i].name,'</span>&lt;<span class="regexp">/li&gt;             </span></span><br><span class="line"><span class="regexp">    '); &#125; p.push('          </span></span><br><span class="line"><span class="regexp">'); &#125; p.push('         </span></span><br><span class="line"><span class="regexp">'); print('数组长度' + items.length ); p.push('         </span></span><br><span class="line"><span class="regexp">&lt;div style=\rbackground:',color,'\r&gt;',id,'&lt;/</span>div&gt;</span><br></pre></td></tr></table></figure>
+<p>第七部： split(“\r”).join(“\’”)<br>替换\r为’ ， 恢复str.replace(/((^|%&gt;)[^\t]*)’/g, “$1\r”) 去掉的’</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'); for ( var i = 0; i &lt; items.length; i++ ) &#123; p.push('</span></span><br><span class="line">    <span class="string">'); if( i%2 == 0) &#123;p.push('</span>                 </span><br><span class="line">        &lt;li&gt;<span class="string">',items[i].id,'</span>:<span class="string">',items[i].name,'</span>&lt;<span class="regexp">/li&gt;             </span></span><br><span class="line"><span class="regexp">    '); &#125; p.push('          </span></span><br><span class="line"><span class="regexp">'); &#125; p.push('         </span></span><br><span class="line"><span class="regexp">'); print('数组长度' + items.length ); p.push('         </span></span><br><span class="line"><span class="regexp">&lt;div style=\'background:',color,'\'&gt;',id,'&lt;/</span>div&gt;</span><br></pre></td></tr></table></figure>
+<p>加上头尾</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p=[],print=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;p.push.apply(p,<span class="built_in">arguments</span>);&#125;;<span class="keyword">with</span>(obj)&#123;p.push(<span class="string">'</span></span><br><span class="line"><span class="string">'</span>); <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++ ) &#123; p.push(<span class="string">'</span></span><br><span class="line"><span class="string">    '</span>); <span class="keyword">if</span>( i%<span class="number">2</span> == <span class="number">0</span>) &#123;p.push(<span class="string">'                 </span></span><br><span class="line"><span class="string">        &lt;li&gt;'</span>,items[i].id,<span class="string">':'</span>,items[i].name,<span class="string">'&lt;/li&gt;             </span></span><br><span class="line"><span class="string">    '</span>); &#125; p.push(<span class="string">'          </span></span><br><span class="line"><span class="string">'</span>); &#125; p.push(<span class="string">'         </span></span><br><span class="line"><span class="string">'</span>); print(<span class="string">'数组长度'</span> + items.length ); p.push(<span class="string">'         </span></span><br><span class="line"><span class="string">&lt;div style=\'background:'</span>,color,<span class="string">'\'&gt;'</span>,id,<span class="string">'&lt;/div&gt;  </span></span><br><span class="line"><span class="string">'</span>);&#125;<span class="keyword">return</span> p.join(<span class="string">''</span>);</span><br></pre></td></tr></table></figure>
+<p>最后格式化一下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = [], print = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; p.push.apply(p, <span class="built_in">arguments</span>); &#125;; <span class="keyword">with</span> (obj) &#123;</span><br><span class="line">    p.push(<span class="string">'    '</span>); <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; items.length; i++) &#123;</span><br><span class="line">        p.push(<span class="string">'        '</span>); <span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            p.push(<span class="string">'            &lt; li &gt; '</span>, items[i].id, <span class="string">': '</span>, items[i].name, <span class="string">'&lt;/li &gt;            '</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        p.push(<span class="string">'      '</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    p.push(<span class="string">'      '</span>);</span><br><span class="line">    print(<span class="string">'数组长度'</span> + items.length); p.push(<span class="string">'                    &lt; div style =\'background:'</span>, color, <span class="string">'\'&gt;'</span>, id, <span class="string">'&lt;/div&gt;      '</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> p.join(<span class="string">''</span>);</span><br></pre></td></tr></table></figure>
+<p>参考资料：</p>
+<p>Micro Templating例子<br><a href="https://codepen.io/xiangwenhu/pen/dJdGBj/" target="_blank" rel="noopener">https://codepen.io/xiangwenhu/pen/dJdGBj/</a></p>
+<p>Micro Templating源码分析<br><a href="https://www.cnblogs.com/cloud-/p/8253123.html" target="_blank" rel="noopener">https://www.cnblogs.com/cloud-/p/8253123.html</a></p>
+<p>最简单的JavaScript模板引擎<br><a href="https://www.cnblogs.com/dolphinX/p/3489269.html" target="_blank" rel="noopener">https://www.cnblogs.com/dolphinX/p/3489269.html</a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.jpeg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wxpay.jpeg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -186,89 +259,172 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//img.fanhaobai.com/qrcode.php?url=https://sela0629.github.io/2019/12/23/micro-Templating源码解析/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/23/Javascript中的this/" class="archive-article-date">
-  	<time datetime="2019-12-23T07:22:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-23</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/12/23/Javascript中的this/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Javascript中的this</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/23/Javascript中的this/">Javascript中的this</a>
-    </h1>
-  
-
-
-<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
-<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
-
-  <a href="javascript:;" class="archive-article-date">
-      <i class="icon-smile icon"></i> 阅读数:<span id="/2019/12/23/Javascript中的this/" class="pageViews">0</span>次
-  </a>
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    目录，不存在的…
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/23/ES6-常用语法整理/" class="archive-article-date">
-  	<time datetime="2019-12-23T06:45:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/23/ES6-常用语法整理/">ES6 常用语法整理</a>
-    </h1>
-  
+        
+    </div>
+</aside>
 
 
-<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
-<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
 
-  <a href="javascript:;" class="archive-article-date">
-      <i class="icon-smile icon"></i> 阅读数:<span id="/2019/12/23/ES6-常用语法整理/" class="pageViews">0</span>次
-  </a>
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
+
+  
+
+  
+
+  
+
+  <!-- valine sela new add -->
+  <!--  -->
 
     
+      <section id="comments" class="comments">
+        <style>
+          .comments{margin:30px;padding:10px;background:#fff}
+          @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+        </style>
+        <!-- <div id="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+new Valine({
+    el: '#comment' ,
+    notify:false, 
+    verify:false, 
+    appId: '',
+    appKey: '',
+    placeholder: 'ヾﾉ≧∀≦)o欢迎评论!',
+    path:window.location.pathname, 
+    avatar:'mm' 
+});
+</script> -->
+
+<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "qWVNgtH5q4quNADlmtBpFrTp-gzGzoHsz",
+            app_key: "kkW22iLP3u7ntIpzFxrogtlq",
+            placeholder: "ヾﾉ≧∀≦)o欢迎评论!",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+
+
+      </section>
+    
+
+
+
 
 
           </div>
@@ -291,8 +447,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

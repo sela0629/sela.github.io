@@ -139,6 +139,257 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-web常见安全问题&amp;防御" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/29/web常见安全问题&防御/">web常见安全问题&amp;防御</a>
+    </h1>
+  
+
+
+<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
+<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
+
+  <a href="javascript:;" class="archive-article-date">
+      <i class="icon-smile icon"></i> 阅读数:<span id="/2018/08/29/web常见安全问题&防御/" class="pageViews">0</span>次
+  </a>
+
+        
+        <a href="/2018/08/29/web常见安全问题&防御/" class="archive-article-date">
+  	<time datetime="2018-08-29T09:29:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#xss">Xss</a><ul>
+<li><a href="#什么是xss攻击">什么是xss攻击</a></li>
+<li><a href="#xss攻击分类">Xss攻击分类</a></li>
+<li><a href="#如何防御xss">如何防御xss</a></li>
+<li><a href="#项目中xss防御">项目中XSS防御：</a><ul>
+<li><a href="#1php输出使用htmlspecialchars函数">1.php输出：使用htmlspecialchars()函数。</a></li>
+<li><a href="#2js中使用xss过滤">2.js中使用xss过滤：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sql注入">Sql注入</a><ul>
+<li><a href="#什么是sql注入">什么是sql注入</a></li>
+<li><a href="#sql注入分类">Sql注入分类</a><ul>
+<li><a href="#1数字注入">1.数字注入</a></li>
+<li><a href="#2字符串注入">2.字符串注入</a></li>
+</ul>
+</li>
+<li><a href="#如何预防sql注入">如何预防SQL注入</a></li>
+<li><a href="#项目中sql注入防御">项目中sql注入防御</a></li>
+</ul>
+</li>
+<li><a href="#csrf">Csrf</a><ul>
+<li><a href="#什么是csrf">什么是csrf</a></li>
+<li><a href="#csrf的原理">CSRF的原理</a></li>
+<li><a href="#简单示例">简单示例：</a></li>
+<li><a href="#如何预防csrf">如何预防CSRF</a><ul>
+<li><a href="#1最基本的手段涉及敏感操作的请求改为post请求">1.最基本的手段：涉及敏感操作的请求改为POST请求</a></li>
+<li><a href="#2用户操作限制验证码机制">2.用户操作限制——验证码机制</a></li>
+<li><a href="#3请求来源限制验证-http-referer-字段">3.请求来源限制——验证 HTTP Referer 字段</a></li>
+<li><a href="#4额外验证机制token的使用">4.额外验证机制——token的使用</a></li>
+<li><a href="#5曲线救国在http头中自定义属性并验证">5.曲线救国——在HTTP头中自定义属性并验证</a></li>
+</ul>
+</li>
+<li><a href="#项目中csrf防御">项目中csrf防御</a></li>
+</ul>
+</li>
+<li><a href="#参考资料">参考资料：</a></li>
+</ul>
+<!-- tocstop -->
+<h1 id="xss"><a href="#Xss" class="headerlink" title="Xss"></a>Xss</h1><p><img src="/2018/08/29/web常见安全问题&防御/1.png" alt=""></p>
+<h2 id="什么是xss攻击"><a href="#什么是xss攻击" class="headerlink" title="什么是xss攻击"></a>什么是xss攻击</h2><p>XSS攻击全称跨站脚本攻击(Cross-site scripting)，是为不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS，XSS是一种在web应用中的计算机安全漏洞，它允许恶意web用户<b><font color="red">将代码植入到提供给其它用户使用的页面中</font></b>。</p>
+<p>如果web应用程序没有部署足够的安全验证，那么，这些攻击很容易成功。浏览器无法探测到这些恶意脚本是不可信的，所以，这些脚本可以任意读取cookie，session tokens，或者其它敏感的网站信息，或者让恶意脚本重写html内容。</p>
+<p>在以下2种情况下，容易发生xss攻击：<b><font color="red">1）数据从一个不可靠的链接进入到一个web应用程序。2）没有过滤掉恶意代码的动态内容被发送给web用户。</font></b></p>
+<p>恶意内容一般包括javascript，但是，有时候也会包括html，flash。XSS攻击的形式千差万别，但是，它们的共同点为：将一些隐私数据像cookie、session发送给攻击者，将受害者重定向到一个由攻击者控制的网站，在受害者的机器上进行一些恶意操作。</p>
+<p>XSS攻击可以分为3类：存储型（持久型）、反射型（非持久型）、基于DOM。</p>
+<h2 id="xss攻击分类"><a href="#Xss攻击分类" class="headerlink" title="Xss攻击分类"></a>Xss攻击分类</h2><p><strong>1.反射型xss</strong></p>
+<p>发出请求时，XSS代码出现在URL中，<b><font color="red">作为输入提交到服务器端，服务器端解析后响应</font></b>，XSS代码随响应内容一起传回给浏览器，最后浏览器解析执行XSS代码。这个过程像一次反射，故叫反射型XSS。</p>
+<p>一个简单的例子：<br><a href="http://www.a.com/xss/reflect.php" target="_blank" rel="noopener">http://www.a.com/xss/reflect.php</a> 的代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> $_GET[<span class="string">'x'</span>];</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果输入x的值未经任何过滤就直接输出，提交：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.foo.com/xss/reflect.php?x=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>则alert()函数会在浏览器触发。</p>
+<p><strong>2.存储型xss</strong></p>
+<p>存储型XSS和反射型XSS的差别仅在于，提交的代码会存储在服务器端（数据库，内存，文件系统等），下次请求目标页面时不用再提交XSS代码。如果页面显示不处理xss显示，则会被攻击。</p>
+<p>最典型的例子是留言板XSS，用户提交一条包含XSS代码的留言<b><font color="red">存储到数据库</font></b>，目标用户查看留言板时，那些留言的内容会从数据库查询出来并显示，浏览器发现有XSS代码，就当做正常的HTML与Js解析执行，于是触发了XSS攻击。</p>
+<p><strong>3.DOM xss</strong></p>
+<p>DOM—based XSS漏洞是基于文档对象模型Document Objeet Model,DOM)的一种漏洞。</p>
+<p>DOM XSS和反射型XSS、存储型XSS的差别在于DOM XSS的代码并不需要服务器参与，触发XSS靠的是浏览器端的DOM解析，完全是客户端的事情。<br><a href="http://www.a.com/xss/domxss.html" target="_blank" rel="noopener">http://www.a.com/xss/domxss.html</a> 代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval(location.hash.substr(1));</span><br></pre></td></tr></table></figure>
+<p>触发方式为：<a href="http://www.a.com/xss/domxss.html#alert(1)" target="_blank" rel="noopener">http://www.a.com/xss/domxss.html#alert(1)</a></p>
+<p>这个URL#后的内容是不会发送到服务器端的，仅仅在客户端被接收并解执行。</p>
+<h2 id="如何防御xss"><a href="#如何防御xss" class="headerlink" title="如何防御xss"></a>如何防御xss</h2><p>1.过滤转义输入输出<br>2.避免使用eval，new Function等执行字符串的方法，除非确定字符串和用户输入无关。<br>3.使用innerHTML，document.write的时候，如果数据是用户输入的，那么需要对关键字符都进行过滤与转义。<br>4.对于非客户端cookie，比如保存用户凭证的session，务必标识为http only，这样js就获取不到这个cookie值了，安全性得到提高。</p>
+<h2 id="项目中xss防御"><a href="#项目中XSS防御：" class="headerlink" title="项目中XSS防御："></a>项目中XSS防御：</h2><h3 id="1php输出使用htmlspecialchars函数"><a href="#1-php输出：使用htmlspecialchars-函数。" class="headerlink" title="1.php输出：使用htmlspecialchars()函数。"></a>1.php输出：使用htmlspecialchars()函数。</h3><p>htmlspecialchars() 函数把一些预定义的字符转换为 HTML 实体。<br>预定义的字符是：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&amp; （和号） 成为 &amp;</span><br><span class="line">" （双引号） 成为 "</span><br><span class="line">' （单引号） 成为 '</span><br><span class="line">&lt; （小于） 成为 &lt;</span><br><span class="line">&gt; （大于） 成为 &gt;</span><br></pre></td></tr></table></figure>
+<h3 id="2js中使用xss过滤"><a href="#2-js中使用xss过滤：" class="headerlink" title="2.js中使用xss过滤："></a>2.js中使用xss过滤：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$xss</span>(<span class="params">str,type</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//空过滤</span></span><br><span class="line">    <span class="keyword">if</span>(!str)&#123;</span><br><span class="line">        <span class="keyword">return</span> str===<span class="number">0</span> ? <span class="string">"0"</span> : <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span>(type)&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"none"</span>: <span class="comment">//过度方案</span></span><br><span class="line">            <span class="keyword">return</span> str+<span class="string">""</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"html"</span>: <span class="comment">//过滤html字符串中的XSS</span></span><br><span class="line">            <span class="keyword">return</span> str.replace(<span class="regexp">/[&amp;'"&lt;&gt;\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">r</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"&amp;#"</span> + r.charCodeAt(<span class="number">0</span>) + <span class="string">";"</span></span><br><span class="line">            &#125;).replace(<span class="regexp">/ /g</span>, <span class="string">"&amp;nbsp;"</span>).replace(<span class="regexp">/\r\n/g</span>, <span class="string">"&lt;br /&gt;"</span>).replace(<span class="regexp">/\n/g</span>,<span class="string">"&lt;br /&gt;"</span>).replace(<span class="regexp">/\r/g</span>,<span class="string">"&lt;br /&gt;"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"htmlEp"</span>: <span class="comment">//过滤DOM节点属性中的XSS</span></span><br><span class="line">            <span class="keyword">return</span> str.replace(<span class="regexp">/[&amp;'"&lt;&gt;\/\\\-\x00-\x1f\x80-\xff]/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">r</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"&amp;#"</span> + r.charCodeAt(<span class="number">0</span>) + <span class="string">";"</span></span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"url"</span>: <span class="comment">//过滤url</span></span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">escape</span>(str).replace(<span class="regexp">/\+/g</span>, <span class="string">"%2B"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"miniUrl"</span>:</span><br><span class="line">            <span class="keyword">return</span> str.replace(<span class="regexp">/%/g</span>, <span class="string">"%25"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"script"</span>:</span><br><span class="line">            <span class="keyword">return</span> str.replace(<span class="regexp">/[\\"']/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">r</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"\\"</span> + r;</span><br><span class="line">            &#125;).replace(<span class="regexp">/%/g</span>, <span class="string">"\\x25"</span>).replace(<span class="regexp">/\n/g</span>, <span class="string">"\\n"</span>).replace(<span class="regexp">/\r/g</span>, <span class="string">"\\r"</span>).replace(<span class="regexp">/\x01/g</span>, <span class="string">"\\x01"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"reg"</span>:</span><br><span class="line">            <span class="keyword">return</span> str.replace(<span class="regexp">/[\\\^\$\*\+\?\&#123;\&#125;\.\(\)\[\]]/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"\\"</span> + a;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">escape</span>(str).replace(<span class="regexp">/[&amp;'"&lt;&gt;\/\\\-\x00-\x09\x0b-\x0c\x1f\x80-\xff]/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">r</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"&amp;#"</span> + r.charCodeAt(<span class="number">0</span>) + <span class="string">";"</span></span><br><span class="line">            &#125;).replace(<span class="regexp">/ /g</span>, <span class="string">"&amp;nbsp;"</span>).replace(<span class="regexp">/\r\n/g</span>, <span class="string">"&lt;br /&gt;"</span>).replace(<span class="regexp">/\n/g</span>,<span class="string">"&lt;br /&gt;"</span>).replace(<span class="regexp">/\r/g</span>,<span class="string">"&lt;br /&gt;"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">exports.parse = $xss;</span><br></pre></td></tr></table></figure>
+<h1 id="sql注入"><a href="#Sql注入" class="headerlink" title="Sql注入"></a>Sql注入</h1><h2 id="什么是sql注入"><a href="#什么是sql注入" class="headerlink" title="什么是sql注入"></a>什么是sql注入</h2><p>SQL注入就是一种通过操作输入来修改后台SQL语句达到代码执行进行攻击目的的技术。<br>SQL注入是一种将SQL代码添加到输入参数中，传递到服务器解析并执行的一种攻击手法。</p>
+<p>SQL注入攻击是输入参数未经过滤，然后直接拼接到SQL语句当中解析，执行达到预想之外的一种行为，称之为SQL注入攻击。</p>
+<p><img src="/2018/08/29/web常见安全问题&防御/2.png" alt=""></p>
+<h2 id="sql注入分类"><a href="#Sql注入分类" class="headerlink" title="Sql注入分类"></a>Sql注入分类</h2><h3 id="1数字注入"><a href="#1-数字注入" class="headerlink" title="1.数字注入"></a>1.数字注入</h3><p>在浏览器地址栏输入：learn.me/sql/article.php?id=1，这是一个get型接口，发送这个请求相当于调用一个查询语句：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql = <span class="string">"SELECT * FROM article WHERE id ="</span>,$id</span><br></pre></td></tr></table></figure>
+<p>正常情况下，应该返回一个id=1的文章信息。那么，如果在浏览器地址栏输入：learn.me/sql/article.php?id=-1 OR 1 =1，这就是一个SQL注入攻击了，可能会返回所有文章的相关信息。为什么会这样呢？<br>这是因为，id = -1永远是false，1=1永远是true，所有整个where语句永远是ture，所以where条件相当于没有加where条件，那么查询的结果相当于整张表的内容</p>
+<h3 id="2字符串注入"><a href="#2-字符串注入" class="headerlink" title="2.字符串注入"></a>2.字符串注入</h3><p>有这样一个用户登录场景：登录界面包括用户名和密码输入框，以及提交按钮。输入用户名和密码，提交。</p>
+<p>这是一个post请求，登录时调用接口learn.me/sql/login.html，首先连接数据库，然后后台对post请求参数中携带的用户名、密码进行参数校验，即sql的查询过程。<br>假设正确的用户名和密码为user和pwd123，输入正确的用户名和密码、提交，相当于调用了以下的SQL语句：</p>
+<p>SELECT * FROM user WHERE username = ‘user’ ADN password = ‘pwd123’</p>
+<p>由于用户名和密码都是字符串，SQL注入方法即把参数携带的数据变成mysql中注释的字符串。mysql中有2种注释的方法：</p>
+<p>1）’#’：’#’后所有的字符串都会被当成注释来处理</p>
+<p>用户名输入：user’#（单引号闭合user左边的单引号），密码随意输入，如：111，然后点击提交按钮。等价于SQL语句：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM user WHERE username = <span class="string">'user'</span><span class="comment">#'ADN password = '111'</span></span><br></pre></td></tr></table></figure>
+<p>‘#’后面都被注释掉了，相当于：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM user WHERE username = <span class="string">'user'</span></span><br></pre></td></tr></table></figure>
+<p>2）’– ‘ （–后面有个空格）：’– ‘后面的字符串都会被当成注释来处理</p>
+<p>用户名输入：user’– （注意–后面有个空格，单引号闭合user左边的单引号），密码随意输入，如：111，然后点击提交按钮。等价于SQL语句：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM user WHERE username = <span class="string">'user'</span>-- <span class="string">'AND password = '</span><span class="number">111</span><span class="string">'</span></span><br><span class="line"><span class="string">SELECT * FROM user WHERE username = '</span>user<span class="string">'-- '</span><span class="keyword">AND</span> password = <span class="string">'1111'</span></span><br></pre></td></tr></table></figure>
+<p>‘– ‘后面都被注释掉了，相当于：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM user WHERE username = <span class="string">'user'</span></span><br></pre></td></tr></table></figure>
+<p>因此，以上两种情况可能输入一个错误的密码或者不输入密码就可登录用户名为’user’的账号，这是十分危险的事情。</p>
+<h2 id="如何预防sql注入"><a href="#如何预防SQL注入" class="headerlink" title="如何预防SQL注入"></a>如何预防SQL注入</h2><p>1）严格检查输入变量的类型和格式</p>
+<p>对于整数参数，加判断条件：不能为空、参数类型必须为数字<br>对于字符串参数，可以使用正则表达式进行过滤：如：必须为[0-9a-zA-Z]范围内的字符串</p>
+<p>2）过滤和转义特殊字符</p>
+<p>在username这个变量前进行转义，对’、”、\等特殊字符进行转义，如：php中的addslashes()函数对username参数进行转义</p>
+<p>3）利用mysql的预编译机制</p>
+<p>把sql语句的模板（变量采用占位符进行占位）发送给mysql服务器，mysql服务器对sql语句的模板进行编译，编译之后根据语句的优化分析对相应的索引进行优化，在最终绑定参数时把相应的参数传送给mysql服务器，直接进行执行，节省了sql查询时间，以及mysql服务器的资源，达到一次编译、多次执行的目的，除此之外，还可以防止SQL注入。具体是怎样防止SQL注入的呢？实际上当将绑定的参数传到mysql服务器，mysql服务器对参数进行编译，即填充到相应的占位符的过程中，做了转义操作。</p>
+<h2 id="项目中sql注入防御"><a href="#项目中sql注入防御" class="headerlink" title="项目中sql注入防御"></a>项目中sql注入防御</h2><p>1.限制变量类型：最好在获取参数时对参数类型进行校验，比如数字类型就 <font color="red">intval()</font> 下。<br>2.项目中使用了CI框架，则尽量使用CI框架数据库内置查询构造器方法，里面已对参数字段进行了转义处理。如果自己拼写sql，php中则使用 <font color="red">mysql_real_escape_string</font> 函数，或着 CI框架中可以使用 <font color="red">escape_str</font> 函数过滤。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">database/DB_active_rec.php</span><br><span class="line">database/DB_driver.php</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/08/29/web常见安全问题&防御/3.png" alt=""></p>
+<p><img src="/2018/08/29/web常见安全问题&防御/4.png" alt=""></p>
+<p><img src="/2018/08/29/web常见安全问题&防御/5.png" alt=""></p>
+<h1 id="csrf"><a href="#Csrf" class="headerlink" title="Csrf"></a>Csrf</h1><h2 id="什么是csrf"><a href="#什么是csrf" class="headerlink" title="什么是csrf"></a>什么是csrf</h2><p>CSRF（Cross-site request forgery，中文为跨站请求伪造）是一种利用网站可信用户的权限去执行未授权的命令的一种恶意攻击。通过伪装可信用户的请求来利用信任该用户的网站，这种攻击方式虽然不是很流行，但是却难以防范，其危害也不比其他安全漏洞小。</p>
+<p>简单点说，CSRF攻击就是攻击者利用受害者的身份，以受害者的名义发送恶意请求。与XSS（Cross-site scripting，跨站脚本攻击）不同的是，XSS的目的是获取用户的身份信息，攻击者窃取到的是用户的身份（session/cookie），而CSRF则是利用用户当前的身份去做一些未经过授权的操作。</p>
+<p><img src="/2018/08/29/web常见安全问题&防御/6.png" alt="6"></p>
+<h2 id="csrf的原理"><a href="#CSRF的原理" class="headerlink" title="CSRF的原理"></a>CSRF的原理</h2><p><img src="/2018/08/29/web常见安全问题&防御/7.png" alt="7"></p>
+<p>　从上图可以看出，要完成一次CSRF攻击，受害者必须依次完成两个步骤：</p>
+<p>　　1.登录受信任网站A，并在本地生成Cookie。</p>
+<p>　　2.在不登出A的情况下，访问危险网站B。</p>
+<p>　　看到这里，你也许会说：“如果我不满足以上两个条件中的一个，我就不会受到CSRF的攻击”。是的，确实如此，但你不能保证以下情况不会发生：</p>
+<p>　　1.你不能保证你登录了一个网站后，不再打开一个tab页面并访问另外的网站。</p>
+<p>　　2.你不能保证你关闭浏览器了后，你本地的Cookie立刻过期，你上次的会话已经结束。（事实上，关闭浏览器不能结束一个会话，但大多数人都会错误的认为关闭浏览器就等于退出登录/结束会话了……）</p>
+<p>3.上图中所谓的攻击网站，可能是一个存在其他漏洞的可信任的经常被人访问的网站。</p>
+<h2 id="简单示例"><a href="#简单示例：" class="headerlink" title="简单示例："></a>简单示例：</h2><p>银行网站A，它以GET请求来完成银行转账的操作，如：<a href="http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000" target="_blank" rel="noopener">http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000</a><br>危险网站B，它里面有一段HTML的代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">http://www.mybank.com/Transfer.php?toBankId</span>=<span class="string">11&amp;money</span>=<span class="string">1000</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>首先，你登录了银行网站A，然后访问危险网站B，噢，这时你会发现你的银行账户少了1000块……</p>
+<p>为什么会这样呢？</p>
+<p>原因是银行网站A违反了HTTP规范，使用GET请求更新资源。</p>
+<p>在访问危险网站B的之前，你已经登录了银行网站A，而B中的<img>以GET的方式请求第三方资源（这里的第三方就是指银行网站了，原本这是一个合法的请求，但这里被不法分子利用了），<br>所以你的浏览器会带上你的银行网站A的Cookie发出Get请求，去获取资源“<a href="http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，" target="_blank" rel="noopener">http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，</a><br>结果银行网站服务器收到请求后，认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作……</p>
+<p><strong>CSRF攻击的对象与防范思路</strong></p>
+<p>我们要防范它，先要知道它的目标，然后设法保护这些目标。</p>
+<p>我们要明白，仅仅靠发起CSRF攻击的话，黑客只能借助受害者的cookie骗取服务器的信任，但是黑客并不能凭借拿到cookie，也看不到 cookie的内容。另外，对于服务器返回的结果，由于浏览器同源策略的限制，黑客也无法进行解析。</p>
+<p>这就告诉我们，<b><font color="red">我们要保护的对象是那些可以直接产生数据改变的服务，而对于读取数据的服务，则不需要进行CSRF的保护。</font></b><br><b><font color="red">而保护的关键，是在请求中放入黑客所不能伪造的信息。</font></b></p>
+<h2 id="如何预防csrf"><a href="#如何预防CSRF" class="headerlink" title="如何预防CSRF"></a>如何预防CSRF</h2><h3 id="1最基本的手段涉及敏感操作的请求改为post请求"><a href="#1-最基本的手段：涉及敏感操作的请求改为POST请求" class="headerlink" title="1.最基本的手段：涉及敏感操作的请求改为POST请求"></a>1.最基本的手段：涉及敏感操作的请求改为POST请求</h3><p>这个方法的确可以防范一些CSRF攻击，但是对于进阶攻击就无能为力了——POST请求一样可以伪造。<br>所以这个方法不够安全。只能提高攻击的门槛。</p>
+<h3 id="2用户操作限制验证码机制"><a href="#2-用户操作限制——验证码机制" class="headerlink" title="2.用户操作限制——验证码机制"></a>2.用户操作限制——验证码机制</h3><p>方法：添加验证码来识别是不是用户主动去发起这个请求，由于一定强度的验证码机器无法识别，因此危险网站不能伪造一个完整的请求。</p>
+<p>优点：简单粗暴，低成本，可靠，能防范99.99%的攻击者。</p>
+<p>缺点：对用户不友好。</p>
+<h3 id="3请求来源限制验证-http-referer-字段"><a href="#3-请求来源限制——验证-HTTP-Referer-字段" class="headerlink" title="3.请求来源限制——验证 HTTP Referer 字段"></a>3.请求来源限制——验证 HTTP Referer 字段</h3><p>方法：在HTTP请求头中有一个字段叫Referer，它记录了请求的来源地址。 服务器需要做的是验证这个来源地址是否合法，如果是来自一些不受信任的网站，则拒绝响应。</p>
+<p>优点：零成本，简单易实现。</p>
+<p>缺点：由于这个方法严重依赖浏览器自身，因此安全性全看浏览器。<br>兼容性不好：每个浏览器对于Referer的具体实现可能有差别。<br>并不一定可靠：在一些古老的垃圾浏览器中，Referer可以被篡改。<br>对用户不友好：Referer值会记录下用户的访问来源，有些用户认为这样会侵犯到他们自己的隐私权。因此有些用户可能会开启浏览器防止跟踪功能，不提供Referer，从而导致正常用户请求被拒绝。</p>
+<h3 id="4额外验证机制token的使用"><a href="#4-额外验证机制——token的使用" class="headerlink" title="4.额外验证机制——token的使用"></a>4.额外验证机制——token的使用</h3><p>方法：使用token来代替验证码验证。由于黑客并不能拿到和看到cookie里的内容，所以无法伪造一个完整的请求。</p>
+<p>基本思路如下：</p>
+<p>服务器随机产生token（比如把cookie hash化生成），存在session中，放在cookie中或者以ajax的形式交给前端。</p>
+<p>前端发请求的时候，解析cookie中的token，放到请求url里或者请求头中。</p>
+<p>服务器验证token，由于黑客无法得到或者伪造token，所以能防范csrf</p>
+<p>更进一步的加强手段（不需要session）：</p>
+<p>服务器随机产生token，然后以token为密钥散列生成一段密文</p>
+<p>把token和密文都随cookie交给前端</p>
+<p>前端发起请求时把密文和token都交给后端</p>
+<p>后端对token和密文进行正向散列验证，看token能不能生成同样的密文</p>
+<p>这样即使黑客拿到了token 也无法拿到密文。</p>
+<p>优点：<br>安全性：极大地提高了破解成本（当然还是有办法破解），但是99%的攻击者看到散列的时候就已经望而生畏了。<br>易用性：非常容易实现。<br>友好性：对用户来说十分友好。</p>
+<p>缺点：<br>性能担忧：需要hash计算，增加性能上的成本</p>
+<p>cookie臃肿：更加依赖网络的情况</p>
+<p>并不绝对安全：<br>一些论坛之类支持用户自己发表内容，由于系统也会在这个地址后面加上token，这样黑客可以在自己的网站上得到这个 token，并马上就可以发动CSRF攻击。（进一步加强法可以防范，或者验证链接是否是链到自己本站的，是就在后面添加 token，如果是通向外网则不加）</p>
+<p>其他攻击方式如XSS攻击能拿到cookie和token，当然这不在本文的讨论范围之内。<br>对于POST请求，难以将token附在请求中。（可以通过框架和库解决）</p>
+<h3 id="5曲线救国在http头中自定义属性并验证"><a href="#5-曲线救国——在HTTP头中自定义属性并验证" class="headerlink" title="5.曲线救国——在HTTP头中自定义属性并验证"></a>5.曲线救国——在HTTP头中自定义属性并验证</h3><p>方法：这种方法也是使用token并进行验证，和上一种方法不同的是把它放到HTTP头中自定义的属性里。</p>
+<p>优点：<br>这样解决了上种方法在请求中加入 token 的不便<br>通过 XMLHttpRequest 请求的地址不会被记录到浏览器的地址栏，安全性较高</p>
+<p>缺点：<br>局限性非常大：XMLHttpRequest请求通常用于Ajax，并非所有的请求都适合用这个类来发起，而且通过该类请求得到的页面不能被浏览器所记录下，造成不便。</p>
+<p>对于旧网站，要把所有请求都改为XMLHttpRequest请求，这样几乎是要重写整个网站，这代价无疑是不能接受的。</p>
+<h2 id="项目中csrf防御"><a href="#项目中csrf防御" class="headerlink" title="项目中csrf防御"></a>项目中csrf防御</h2><p>Csrf主要预防在于服务端，目前项目中使用验证码和HTTP Referer等机制。前端需要做的主要是请求尽量都用post，提高攻击门槛。</p>
+<h1 id="参考资料"><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><ul>
+<li><p><a href="https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&amp;mid=2247483770&amp;idx=1&amp;sn=4f2247fdf7e1de9d8c45539c09751ba4&amp;chksm=fbb58ab3ccc203a50abf225bdf6db56d10f5b0030cb9f333b245ebb95f8c440673901f7d6c23#rd" target="_blank" rel="noopener">前端安全知多少</a></p>
+</li>
+<li><p><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Cross-site_scripting" target="_blank" rel="noopener">跨站脚本攻击(Cross-site scripting)</a></p>
+</li>
+<li><p><a href="https://lvtao.net/dev/xss.html" target="_blank" rel="noopener">XSS攻击常识及常见的XSS攻击脚本汇总</a></p>
+</li>
+<li><p><a href="https://winixt.me/XSS%E6%94%BB%E5%87%BB%E5%92%8C%E9%98%B2%E5%BE%A1/" target="_blank" rel="noopener">XSS 攻击和防御</a></p>
+</li>
+<li><p><a href="https://paper.seebug.org/15/" target="_blank" rel="noopener">渗透攻防Web篇-SQL注入攻击初级</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/ba35a7e1c67d" target="_blank" rel="noopener">SQL注入攻击与防御</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/github_36032947/article/details/78442189" target="_blank" rel="noopener">SQL注入攻击常见方式及测试方法</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/12f6135acace" target="_blank" rel="noopener">CodeIgniter源码分析 7.2 - 数据库驱动之查询构造器</a></p>
+</li>
+<li><p><a href="https://www.imooc.com/article/13552" target="_blank" rel="noopener">对于跨站伪造请求（CSRF）的理解和总结</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" target="_blank" rel="noopener">浅谈CSRF攻击方式</a></p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">web安全</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/08/29/web常见安全问题&防御/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
