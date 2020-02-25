@@ -154,9 +154,9 @@
 <!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
 <!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
 
-  <a href="javascript:;" class="archive-article-date">
+  <!-- <a href="javascript:;" class="archive-article-date">
       <i class="icon-smile icon"></i> 阅读数:<span id="/2018/09/02/Hexo中插入本地图片/" class="pageViews">0</span>次
-  </a>
+  </a> -->
 
         
         <a href="/2018/09/02/Hexo中插入本地图片/" class="archive-article-date">
@@ -259,9 +259,9 @@
 <!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
 <!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
 
-  <a href="javascript:;" class="archive-article-date">
+  <!-- <a href="javascript:;" class="archive-article-date">
       <i class="icon-smile icon"></i> 阅读数:<span id="/2018/09/02/Hexo生成文章目录/" class="pageViews">0</span>次
-  </a>
+  </a> -->
 
         
         <a href="/2018/09/02/Hexo生成文章目录/" class="archive-article-date">
@@ -343,175 +343,6 @@
 
 
   
-    <article id="post-Github上Hexo博客搭建教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/29/Github上Hexo博客搭建教程/">Github上Hexo博客搭建教程</a>
-    </h1>
-  
-
-
-<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
-<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
-
-  <a href="javascript:;" class="archive-article-date">
-      <i class="icon-smile icon"></i> 阅读数:<span id="/2018/08/29/Github上Hexo博客搭建教程/" class="pageViews">0</span>次
-  </a>
-
-        
-        <a href="/2018/08/29/Github上Hexo博客搭建教程/" class="archive-article-date">
-  	<time datetime="2018-08-29T09:29:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- toc -->
-<ul>
-<li><a href="#hexo-介绍">Hexo 介绍</a></li>
-<li><a href="#环境准备">环境准备</a></li>
-<li><a href="#参考资料">参考资料：</a></li>
-</ul>
-<!-- tocstop -->
-<h1 id="hexo-介绍"><a href="#Hexo-介绍" class="headerlink" title="Hexo 介绍"></a>Hexo 介绍</h1><p>Hexo是基于NodeJs的静态博客框架，简单、轻量，其生成的静态网页可以托管在Github和Heroku上。<br>超快速度<br>支持MarkDown<br>一键部署<br>丰富的插件</p>
-<p>下面以我的博客为例，<a href="https://sela0629.github.io">https://sela0629.github.io</a></p>
-<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><ol>
-<li>安装node.js</li>
-</ol>
-<p>通过homebrew安装。</p>
-<p>安装好homebrew后在终端安装node。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew link node</span><br><span class="line">brew uninstall node</span><br><span class="line">brew install node</span><br></pre></td></tr></table></figure>
-<p>[Node.js]在mac上安装node.js</p>
-<p><a href="https://www.jianshu.com/p/3b30c4c846d1" target="_blank" rel="noopener">https://www.jianshu.com/p/3b30c4c846d1</a></p>
-<p>2.安装hexo</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-<p>注意：mac系统，则需要</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-<p>3.利用Hexo搭建一个博客</p>
-<p>3.1 创建博客目录sela0629.github.io  <font color="red">【这个目录为本地项目目录，不影响github中仓库名称，但建议与你的github账号用户名一致，避免后面得修改】</font></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo init limedroid.github.io</span><br><span class="line"><span class="meta">$</span> cd limedroid.github.io</span><br><span class="line"><span class="meta">$</span> npm install</span><br></pre></td></tr></table></figure>
-<p>3.2 生成静态页面</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo clean</span><br><span class="line"><span class="meta">$</span> hexo g</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>g 即generate</p>
-</blockquote>
-<p>3.3 运行</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo s</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>s 即server</p>
-</blockquote>
-<p>然后打开浏览器，输入地址 localhost:4000 即可看到效果。</p>
-<p>4.发一篇文章试试</p>
-<p>4.1 命令方式</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo new test</span><br></pre></td></tr></table></figure>
-<p>此时会在 source/_post 目录下生成 test.md 文件，输入些许内容，然后保存。生成下，看看效果</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo clean</span><br><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo s</span><br></pre></td></tr></table></figure>
-<p>访问 localhost:4000 即可</p>
-<p>4.2 直接方式</p>
-<p>在 source/_post 目录下新建一个.md文件即可。</p>
-<p>5 配置</p>
-<p>网站的设置大部分都在<strong>_config.yml</strong>文件中，详细配置可以查看<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">官方文档</a></p>
-<p>下面只列出简单常用配置</p>
-<p>title -&gt; 网站标题<br>subtitle -&gt; 网站副标题<br>description -&gt; 网站描述<br>author -&gt; 您的名字<br>language -&gt; 网站使用的语言</p>
-<p>坑：进行配置时，需要在冒号:后加一个英文空格</p>
-<p>title: Droidlover</p>
-<ol start="6">
-<li>部署到Github</li>
-</ol>
-<p>6.1 有个github账号</p>
-<p><a href="https://github.com" target="_blank" rel="noopener">https://github.com</a></p>
-<p>6.2 创建一个xxx.github.io的public仓库</p>
-<p>如果你的github账户名是sela0629，则创建一个sela0629.github.io的public仓库。请注意使用github账户名，否则生成的博客地址不是简单的 [github user name].github.io</p>
-<p>6.3 安装hexo-deployer-git</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-<p>6.4 网站配置git</p>
-<p>在网站 _config.yml 中配置 deyploy</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: <span class="tag">&lt;<span class="name">repository</span> <span class="attr">url</span>&gt;</span></span><br><span class="line">  branch: [branch]</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/sela0629/sela0629.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>branch为分支，默认为master,可以不配置 repo为仓库地址，在github上新建仓库后，可复制此地址</p>
-</blockquote>
-<p>6.5 部署</p>
-<p>生成静态文件和部署</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo d</span><br></pre></td></tr></table></figure>
-<p>最后出现如下提示代表成功啦！</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO Deploy done:git</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>d即deploy</p>
-</blockquote>
-<p>7 设置访问github的page页</p>
-<p>在仓库的 setting 一栏，当以 github账号名.github.io创建的仓库时会自动开启github pages</p>
-<h1 id="参考资料"><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><ul>
-<li><p><a href="https://github.com/limedroid/HexoLearning" target="_blank" rel="noopener">Hexo 博客搭建指南</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/imapla/p/5533000.html" target="_blank" rel="noopener">Hexo 博客部署到 GitHub</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/jackyroc/p/7681938.html" target="_blank" rel="noopener">我是如何利用Github Pages搭建起我的博客，细数一路的坑</a></p>
-</li>
-<li><p><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">Hexo搭建博客教程</a></p>
-</li>
-<li><p><a href="https://imys.net/20150514/hexo-toc.html" target="_blank" rel="noopener">Hexo添加Toc支持，生成文章目录</a></p>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/08/29/Github上Hexo博客搭建教程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-web常见安全问题&amp;防御" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -527,9 +358,9 @@
 <!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
 <!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
 
-  <a href="javascript:;" class="archive-article-date">
+  <!-- <a href="javascript:;" class="archive-article-date">
       <i class="icon-smile icon"></i> 阅读数:<span id="/2018/08/29/web常见安全问题&防御/" class="pageViews">0</span>次
-  </a>
+  </a> -->
 
         
         <a href="/2018/08/29/web常见安全问题&防御/" class="archive-article-date">
@@ -763,6 +594,175 @@
 
 
   
+    <article id="post-Github上Hexo博客搭建教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/29/Github上Hexo博客搭建教程/">Github上Hexo博客搭建教程</a>
+    </h1>
+  
+
+
+<!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
+<!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
+
+  <!-- <a href="javascript:;" class="archive-article-date">
+      <i class="icon-smile icon"></i> 阅读数:<span id="/2018/08/29/Github上Hexo博客搭建教程/" class="pageViews">0</span>次
+  </a> -->
+
+        
+        <a href="/2018/08/29/Github上Hexo博客搭建教程/" class="archive-article-date">
+  	<time datetime="2018-08-29T09:29:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#hexo-介绍">Hexo 介绍</a></li>
+<li><a href="#环境准备">环境准备</a></li>
+<li><a href="#参考资料">参考资料：</a></li>
+</ul>
+<!-- tocstop -->
+<h1 id="hexo-介绍"><a href="#Hexo-介绍" class="headerlink" title="Hexo 介绍"></a>Hexo 介绍</h1><p>Hexo是基于NodeJs的静态博客框架，简单、轻量，其生成的静态网页可以托管在Github和Heroku上。<br>超快速度<br>支持MarkDown<br>一键部署<br>丰富的插件</p>
+<p>下面以我的博客为例，<a href="https://sela0629.github.io">https://sela0629.github.io</a></p>
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><ol>
+<li>安装node.js</li>
+</ol>
+<p>通过homebrew安装。</p>
+<p>安装好homebrew后在终端安装node。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew link node</span><br><span class="line">brew uninstall node</span><br><span class="line">brew install node</span><br></pre></td></tr></table></figure>
+<p>[Node.js]在mac上安装node.js</p>
+<p><a href="https://www.jianshu.com/p/3b30c4c846d1" target="_blank" rel="noopener">https://www.jianshu.com/p/3b30c4c846d1</a></p>
+<p>2.安装hexo</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+<p>注意：mac系统，则需要</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+<p>3.利用Hexo搭建一个博客</p>
+<p>3.1 创建博客目录sela0629.github.io  <font color="red">【这个目录为本地项目目录，不影响github中仓库名称，但建议与你的github账号用户名一致，避免后面得修改】</font></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo init limedroid.github.io</span><br><span class="line"><span class="meta">$</span> cd limedroid.github.io</span><br><span class="line"><span class="meta">$</span> npm install</span><br></pre></td></tr></table></figure>
+<p>3.2 生成静态页面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo clean</span><br><span class="line"><span class="meta">$</span> hexo g</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>g 即generate</p>
+</blockquote>
+<p>3.3 运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo s</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>s 即server</p>
+</blockquote>
+<p>然后打开浏览器，输入地址 localhost:4000 即可看到效果。</p>
+<p>4.发一篇文章试试</p>
+<p>4.1 命令方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo new test</span><br></pre></td></tr></table></figure>
+<p>此时会在 source/_post 目录下生成 test.md 文件，输入些许内容，然后保存。生成下，看看效果</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo clean</span><br><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo s</span><br></pre></td></tr></table></figure>
+<p>访问 localhost:4000 即可</p>
+<p>4.2 直接方式</p>
+<p>在 source/_post 目录下新建一个.md文件即可。</p>
+<p>5 配置</p>
+<p>网站的设置大部分都在<strong>_config.yml</strong>文件中，详细配置可以查看<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">官方文档</a></p>
+<p>下面只列出简单常用配置</p>
+<p>title -&gt; 网站标题<br>subtitle -&gt; 网站副标题<br>description -&gt; 网站描述<br>author -&gt; 您的名字<br>language -&gt; 网站使用的语言</p>
+<p>坑：进行配置时，需要在冒号:后加一个英文空格</p>
+<p>title: Droidlover</p>
+<ol start="6">
+<li>部署到Github</li>
+</ol>
+<p>6.1 有个github账号</p>
+<p><a href="https://github.com" target="_blank" rel="noopener">https://github.com</a></p>
+<p>6.2 创建一个xxx.github.io的public仓库</p>
+<p>如果你的github账户名是sela0629，则创建一个sela0629.github.io的public仓库。请注意使用github账户名，否则生成的博客地址不是简单的 [github user name].github.io</p>
+<p>6.3 安装hexo-deployer-git</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<p>6.4 网站配置git</p>
+<p>在网站 _config.yml 中配置 deyploy</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: <span class="tag">&lt;<span class="name">repository</span> <span class="attr">url</span>&gt;</span></span><br><span class="line">  branch: [branch]</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/sela0629/sela0629.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>branch为分支，默认为master,可以不配置 repo为仓库地址，在github上新建仓库后，可复制此地址</p>
+</blockquote>
+<p>6.5 部署</p>
+<p>生成静态文件和部署</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo d</span><br></pre></td></tr></table></figure>
+<p>最后出现如下提示代表成功啦！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO Deploy done:git</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>d即deploy</p>
+</blockquote>
+<p>7 设置访问github的page页</p>
+<p>在仓库的 setting 一栏，当以 github账号名.github.io创建的仓库时会自动开启github pages</p>
+<h1 id="参考资料"><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><ul>
+<li><p><a href="https://github.com/limedroid/HexoLearning" target="_blank" rel="noopener">Hexo 博客搭建指南</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/imapla/p/5533000.html" target="_blank" rel="noopener">Hexo 博客部署到 GitHub</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/jackyroc/p/7681938.html" target="_blank" rel="noopener">我是如何利用Github Pages搭建起我的博客，细数一路的坑</a></p>
+</li>
+<li><p><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">Hexo搭建博客教程</a></p>
+</li>
+<li><p><a href="https://imys.net/20150514/hexo-toc.html" target="_blank" rel="noopener">Hexo添加Toc支持，生成文章目录</a></p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/08/29/Github上Hexo博客搭建教程/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -778,9 +778,9 @@
 <!-- 上面是 yilia 主题的标题 下面是我自己添加的阅读量 html 代码 -->
 <!-- span 给的 id 是文章的 url 作为唯一的 key 值 -->
 
-  <a href="javascript:;" class="archive-article-date">
+  <!-- <a href="javascript:;" class="archive-article-date">
       <i class="icon-smile icon"></i> 阅读数:<span id="/2018/08/28/hello-world/" class="pageViews">0</span>次
-  </a>
+  </a> -->
 
         
         <a href="/2018/08/28/hello-world/" class="archive-article-date">
